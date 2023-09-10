@@ -1,0 +1,43 @@
+.project {
+  overflow: hidden;
+  border-radius: 8px;
+
+  img {
+    width: 100%;
+    object-fit: cover;
+    height: 10rem;
+    border-radius: 8px;
+  }
+
+  strong {
+    color: white;
+    font-size: 1.25rem;
+    margin-top: 0.75rem;
+    display: block;
+  }
+
+  p {
+    font-size: 1rem;
+    color: white;
+    margin-top: 0.25rem;
+    line-height: 1.25;
+  }
+
+  button {
+    margin-top: 1.25rem;
+    margin-left: auto;
+    color: white;
+    font-size: 1rem;
+    background: transparent;
+    color: var(--slate-400);
+    font-size: 1rem;
+    border: 0;
+    cursor: pointer;
+    transition: filter .25s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+  }
+}

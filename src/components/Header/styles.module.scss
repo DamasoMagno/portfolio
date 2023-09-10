@@ -1,0 +1,39 @@
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+  backdrop-filter: blur(2px);
+}
+
+.headerContent {
+  padding: 1rem 1rem;
+  margin: 0 auto;
+  max-width: 1232px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  strong {
+    color: #fff;
+    font-size: 2rem;
+    letter-spacing: 2.5px;
+
+    span {
+      font-size: 1.5rem;
+    }
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    a {
+      list-style: none;
+      color: #fff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+:root {
+  --slate-50: #F8FAFC;
+  --slate-100: #F1F5F9;
+  --slate-200: #E2E8F0; 
+  --slate-300: #CBD5E1; 
+  --slate-400: #94A3B8; 
+  --slate-500: #64748B;
+  --white: #FFFF;
+  --black: #000;
+  --background: #22212C;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  @media (max-width: 768px) {
+    font-size: .9375rem;
+  }
+}
+
+body {
+  background: #22212C;
+}
+
+body, input, button, textarea {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  -webkit-font-smoothing: antialiased;
+}
+
+.headerFloat {
+  background: linear-gradient(280deg, #302f3d 0%, rgba(48, 47, 61, 0.25) 100%);
+  backdrop-filter: blur(2px);
+}

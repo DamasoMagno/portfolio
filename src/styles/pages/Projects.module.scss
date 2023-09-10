@@ -1,0 +1,93 @@
+.wrapper {
+  max-width: 1200px;
+  margin: 0 auto 0;
+  padding: 0 1rem;;
+}
+
+.filters {
+  margin-top: 6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.filters .search {
+  background-color: #302f3d;
+  padding: 0 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  max-width: 450px;
+  width: 90%;
+
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  input {
+    background-color: transparent;
+    border: 0;
+    color: white;
+    outline: 0;
+    padding: 0 0.5rem;
+    height: 3rem;
+    flex: 1;
+  }
+
+  button {
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    font-size: 1.25rem;
+    color: white;
+    cursor: pointer;
+  }
+}
+
+.filters .languages {
+  max-width: 600px;
+  gap: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+
+  button {
+    background-color: #302f3d;
+    opacity: .7;
+    color: #fff;
+    border-radius: 8px;
+    border: 0;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &[data-select="true"] {
+      opacity: 1;
+    }
+  }
+}
+
+.projects {
+  margin-top: 5rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+
+  @media (min-width: 500px) and (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
