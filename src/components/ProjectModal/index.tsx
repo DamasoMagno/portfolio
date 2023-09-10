@@ -1,4 +1,5 @@
 import { Root, Portal, Content, Close, Overlay } from "@radix-ui/react-dialog";
+import Image from "next/image";
 
 import styles from "./styles.module.scss";
 import { IProject } from "@/interfaces";
@@ -29,7 +30,10 @@ export function ProjectModal({
               </header>
             </Close>
 
-            <img src={project?.image?.url} />
+            <Image  
+              src={project?.image?.url} 
+              alt={project.name}
+            />
 
             <div>
               <strong>{project?.name}</strong>

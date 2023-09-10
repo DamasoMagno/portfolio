@@ -1,4 +1,5 @@
-import { ComponentProps, FC } from "react";
+import { ComponentProps } from "react";
+import Image from "next/image";
 import * as Bi from "react-icons/bi";
 
 import styles from "./styles.module.scss";
@@ -8,10 +9,10 @@ interface ProjectProps extends ComponentProps<"button"> {
   project: IProject;
 }
 
-export function Project({ project, ...props }: ProjectProps){
+export function Project({ project, ...props }: ProjectProps) {
   return (
     <div className={styles.project}>
-      <img src={project.image?.url} />
+      <Image src={project.image?.url} alt={project.name} />
       <strong>{project.name}</strong>
       <p>{project.description}</p>
 
@@ -21,4 +22,4 @@ export function Project({ project, ...props }: ProjectProps){
       </button>
     </div>
   );
-};
+}
