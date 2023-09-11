@@ -20,18 +20,24 @@ interface ProjectProps {
 export default function Projects({ languages }: ProjectProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setModalOpen] = useState<boolean>(false);
-
-  const [projects, setProjects] = useState<IProject[]>([]);
   const [project, setProject] = useState({} as IProject);
-  const [filters, setLanguages] = useState(["JavaScript"]);
+  
+  const [projects, setProjects] = useState<IProject[]>([]);
+  const [filters, setLanguages] = useState<string[]>([]);
+
+  const languagesFormatted = filters.length ? filters : languages.map(({ name }) => name);
+
 
   useEffect(() => {
     client
       .query({
         query: ProjectsQuery,
+        variables: {
+          languages: [...languagesFormatted],
+        },
       })
       .then(({ data }) => setProjects(data.projects));
-  }, []);
+  }, [filters]);
 
   function selectProjectToShowOnModal(project: IProject) {
     setProject(project);
@@ -39,17 +45,17 @@ export default function Projects({ languages }: ProjectProps) {
   }
 
   function handleFilterLanguage(filterMame: string) {
-    const filterExists = filters.find(filter => filter === filterMame);
+    const filterExists = filters.find((filter) => filter === filterMame);
 
-    if(filterExists){
+    if (filterExists) {
       setLanguages(() => {
-        return filters.filter(filter => filter !== filterMame);
+        return filters.filter((filter) => filter !== filterMame);
       });
 
       return;
     }
 
-    setLanguages(state => [...state, filterMame]);
+    setLanguages((state) => [...state, filterMame]);
   }
 
   async function filterProjects() {
@@ -58,12 +64,13 @@ export default function Projects({ languages }: ProjectProps) {
         query: ProjectsQuery,
         variables: {
           name: inputRef.current?.value,
+          languages: [...languagesFormatted]
         },
       });
-  
+
       setProjects(data.projects);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -83,7 +90,7 @@ export default function Projects({ languages }: ProjectProps) {
           <div className={styles.languages}>
             {languages.map((language) => {
               return (
-                <button 
+                <button
                   key={language.id}
                   onClick={() => handleFilterLanguage(language.name)}
                   data-select={filters.includes(language.name)}

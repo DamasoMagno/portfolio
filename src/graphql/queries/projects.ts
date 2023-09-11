@@ -1,15 +1,15 @@
 import { gql } from "@apollo/client";
 
 export const ProjectsQuery = gql`
-  query Projects($name: String = "") {
-    projects(where: {name_contains: $name}) {
+  query Projects($name: String = "", $languages: [String]) {
+    projects(where: {name_contains: $name, languages_some: {name_in: $languages}}) {
       id
       image {
         url
       }
       name
-      description
       resume
+      description
       address
       repository
       languages {
@@ -18,5 +18,4 @@ export const ProjectsQuery = gql`
       }
     }
   }
-  
 `;
