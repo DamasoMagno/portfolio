@@ -3,14 +3,13 @@ import { GetStaticProps } from "next";
 import { icons } from "@/utils/format-icons";
 import { verifyDateIsCurrent } from "@/utils/verify-date-is-valid";
 
-import { IAuthor, IExperiencie, ILanguage } from "@/interfaces";
+import { IAuthor, IExperiencie } from "@/interfaces";
 import { AuthorQuery } from "@/graphql/queries/author";
 import { client } from "@/libs/apollo";
 
 import { Header } from "@/components/Header";
 
 import styles from "@/styles/pages/Home.module.scss";
-import { Blob } from "buffer";
 
 interface HomeProps {
   author: IAuthor;
@@ -18,16 +17,13 @@ interface HomeProps {
 
 export default function Home({ author }: HomeProps) {
   async function downloadCurriculum() {
-    fetch(author.curriculum.url).then((response) => {
-      response.blob().then((blob) => {
-        const fileURL = window.URL.createObjectURL(blob);
-        let alink = document.createElement("a");
-
-        alink.href = fileURL;
-        alink.download = "Curriculo.pdf";
-        alink.click();
-      });
-    });
+    const responseAsBlob = new Blob([author.curriculum.url]);
+    
+    const url = URL.createObjectURL(responseAsBlob);
+    const linkToDownlaodFile = document.createElement("a");
+    linkToDownlaodFile.href = url;
+    linkToDownlaodFile.download;
+    linkToDownlaodFile.click();
   }
 
   return (
