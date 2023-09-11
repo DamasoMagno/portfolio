@@ -6,6 +6,9 @@ query Author {
     name
     area
     about
+    curriculum {
+      url
+    }
     languages {
       id
       name

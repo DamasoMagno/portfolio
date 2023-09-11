@@ -1,6 +1,9 @@
 .project {
   overflow: hidden;
   border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
   img {
     width: 100%;

@@ -23,6 +23,7 @@ export default function Projects({ languages }: ProjectProps) {
 
   const [projects, setProjects] = useState<IProject[]>([]);
   const [project, setProject] = useState({} as IProject);
+  const [filters, setLanguages] = useState(["JavaScript"]);
 
   useEffect(() => {
     client
@@ -35,6 +36,20 @@ export default function Projects({ languages }: ProjectProps) {
   function selectProjectToShowOnModal(project: IProject) {
     setProject(project);
     setModalOpen(true);
+  }
+
+  function handleFilterLanguage(filterMame: string) {
+    const filterExists = filters.find(filter => filter === filterMame);
+
+    if(filterExists){
+      setLanguages(() => {
+        return filters.filter(filter => filter !== filterMame);
+      });
+
+      return;
+    }
+
+    setLanguages(state => [...state, filterMame]);
   }
 
   async function filterProjects() {
@@ -67,7 +82,15 @@ export default function Projects({ languages }: ProjectProps) {
 
           <div className={styles.languages}>
             {languages.map((language) => {
-              return <button key={language.id}>{language.name}</button>;
+              return (
+                <button 
+                  key={language.id}
+                  onClick={() => handleFilterLanguage(language.name)}
+                  data-select={filters.includes(language.name)}
+                >
+                  {language.name}
+                </button>
+              );
             })}
           </div>
         </section>

@@ -21,6 +21,9 @@ export interface IAuthor {
   name: string;
   area: string;
   about: string;
+  curriculum: {
+    url: string;
+  };
   languages: ILanguage[];
   experiencies: IExperiencie[];
   networks: INetwork[];

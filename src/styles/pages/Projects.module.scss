@@ -54,7 +54,7 @@
   flex-wrap: wrap;
 
   button {
-    background-color: #302f3d;
+    background-color: rgba($color: #302f3d, $alpha: 0.5);
     opacity: .7;
     color: #fff;
     border-radius: 8px;
@@ -68,7 +68,7 @@
     justify-content: center;
 
     &[data-select="true"] {
-      opacity: 1;
+      background-color: #302f3d;
     }
   }
 }

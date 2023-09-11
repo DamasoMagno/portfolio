@@ -1,4 +1,4 @@
-import { GetServerSideProps } from "next";
+import { GetStaticProps } from "next";
 
 import { icons } from "@/utils/format-icons";
 import { verifyDateIsCurrent } from "@/utils/verify-date-is-valid";
@@ -8,7 +8,6 @@ import { AuthorQuery } from "@/graphql/queries/author";
 import { client } from "@/libs/apollo";
 
 import { Header } from "@/components/Header";
-
 
 import styles from "@/styles/pages/Home.module.scss";
 
@@ -28,7 +27,9 @@ export default function Home({ author }: HomeProps) {
           <strong>{author.area}</strong>
         </div>
 
-        <button>Baixar curriculo</button>
+        <a href={author.curriculum.url} target="_blank">
+          Baixar curriculo
+        </a>
       </section>
 
       <section>
@@ -41,11 +42,7 @@ export default function Home({ author }: HomeProps) {
               for (const icon of icons.netwoks) {
                 return (
                   icon.name === network.name && (
-                    <a
-                      href={network.url}
-                      key={network.name}
-                      title={author.name}
-                    >
+                    <a key={network.id} href={network.url} title={author.name}>
                       {<icon.icon />}
                     </a>
                   )
@@ -59,7 +56,7 @@ export default function Home({ author }: HomeProps) {
           <h2>Habilidades</h2>
 
           <ul>
-            {author.languages.map((skill: ILanguage) => {
+            {author.languages.map((skill) => {
               for (const icon of icons.languages) {
                 if (icon.name === skill.name) {
                   return (
@@ -120,7 +117,7 @@ export default function Home({ author }: HomeProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const { data } = await client.query({
     query: AuthorQuery,
   });
@@ -131,5 +128,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       author,
     },
+    revalidate: 60 * 60 * 1, // 1 hour
   };
 };

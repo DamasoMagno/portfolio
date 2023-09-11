@@ -1,5 +1,6 @@
 import { Root, Portal, Content, Close, Overlay } from "@radix-ui/react-dialog";
 import Image from "next/image";
+import * as AI from "react-icons/ai";
 
 import styles from "./styles.module.scss";
 import { IProject } from "@/interfaces";
@@ -26,13 +27,18 @@ export function ProjectModal({
           <div className={styles.projectInfo}>
             <Close asChild>
               <header>
-                <button>voltar para os projetos</button>
+                <button>
+                  <AI.AiOutlineArrowLeft />
+                  voltar para os projetos
+                </button>
               </header>
             </Close>
 
             <Image  
               src={project?.image?.url} 
               alt={project.name}
+              width={300}
+              height={0}
             />
 
             <div>
