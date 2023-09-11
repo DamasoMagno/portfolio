@@ -3,26 +3,32 @@ import { GetStaticProps } from "next";
 import { icons } from "@/utils/format-icons";
 import { verifyDateIsCurrent } from "@/utils/verify-date-is-valid";
 
-import { IAuthor, IExperiencie } from "@/interfaces";
+import { IAuthor, IExperiencie, ILanguage } from "@/interfaces";
 import { AuthorQuery } from "@/graphql/queries/author";
 import { client } from "@/libs/apollo";
 
 import { Header } from "@/components/Header";
 
 import styles from "@/styles/pages/Home.module.scss";
+import { Blob } from "buffer";
+import { BiLogIn } from "react-icons/bi";
+import { link } from "fs";
 
 interface HomeProps {
   author: IAuthor;
 }
 
 export default function Home({ author }: HomeProps) {
+
+
   async function downloadCurriculum() {
-    const responseAsBlob = new Blob([author.curriculum.url]);
+    const response = await fetch(author.curriculum.url);
+    const responseAsBlob = await response.blob();
     
     const url = URL.createObjectURL(responseAsBlob);
     const linkToDownlaodFile = document.createElement("a");
     linkToDownlaodFile.href = url;
-    linkToDownlaodFile.download;
+    linkToDownlaodFile.download = "Curriculo.pdf";
     linkToDownlaodFile.click();
   }
 
