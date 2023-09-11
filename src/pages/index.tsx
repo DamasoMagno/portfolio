@@ -10,12 +10,26 @@ import { client } from "@/libs/apollo";
 import { Header } from "@/components/Header";
 
 import styles from "@/styles/pages/Home.module.scss";
+import { Blob } from "buffer";
 
 interface HomeProps {
   author: IAuthor;
 }
 
 export default function Home({ author }: HomeProps) {
+  async function downloadCurriculum() {
+    fetch(author.curriculum.url).then((response) => {
+      response.blob().then((blob) => {
+        const fileURL = window.URL.createObjectURL(blob);
+        let alink = document.createElement("a");
+
+        alink.href = fileURL;
+        alink.download = "Curriculo.pdf";
+        alink.click();
+      });
+    });
+  }
+
   return (
     <>
       <Header />
@@ -27,9 +41,7 @@ export default function Home({ author }: HomeProps) {
           <strong>{author.area}</strong>
         </div>
 
-        <a href={author.curriculum.url} target="_blank">
-          Baixar curriculo
-        </a>
+        <button onClick={downloadCurriculum}>Baixar curriculo</button>
       </section>
 
       <section>

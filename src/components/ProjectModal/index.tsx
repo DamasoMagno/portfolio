@@ -55,8 +55,8 @@ export function ProjectModal({
           </div>
 
           <footer>
-            <a href={project?.repository}>Repositorio</a>
-            <a href={project?.address}>Visitar</a>
+            <a href={project?.repository} target="_blank" rel="noreferrer">Repositorio</a>
+            <a href={project?.address} target="_blank" rel="noreferrer">Visitar</a>
           </footer>
         </Content>
       </Portal>
