@@ -3,34 +3,50 @@ import { GetStaticProps } from "next";
 import { icons } from "@/utils/format-icons";
 import { verifyDateIsCurrent } from "@/utils/verify-date-is-valid";
 
-import { IAuthor, IExperiencie, ILanguage } from "@/interfaces";
+import { IAuthor, IExperiencie } from "@/interfaces";
 import { AuthorQuery } from "@/graphql/queries/author";
 import { client } from "@/libs/apollo";
 
 import { Header } from "@/components/Header";
 
 import styles from "@/styles/pages/Home.module.scss";
-import { Blob } from "buffer";
-import { BiLogIn } from "react-icons/bi";
-import { link } from "fs";
 
 interface HomeProps {
   author: IAuthor;
 }
 
 export default function Home({ author }: HomeProps) {
-
-
   async function downloadCurriculum() {
     const response = await fetch(author.curriculum.url);
     const responseAsBlob = await response.blob();
-    
+
     const url = URL.createObjectURL(responseAsBlob);
     const linkToDownlaodFile = document.createElement("a");
     linkToDownlaodFile.href = url;
     linkToDownlaodFile.download = "Curriculo.pdf";
     linkToDownlaodFile.click();
   }
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const form = new FormData(e.target);
+
+    const formDataObj = {} as any;
+
+    form.forEach((value, key) => {
+      formDataObj[key] = value;
+    });
+
+    try {
+      await fetch("https://api.staticforms.xyz/submit", {
+        method: "POST",
+        body: JSON.stringify(formDataObj),
+        headers: { "Content-Type": "application/json" },
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
@@ -111,19 +127,29 @@ export default function Home({ author }: HomeProps) {
       <section className={styles.joinContact}>
         <h2>Entre em contato</h2>
 
-        <form>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="hidden"
+            name="accessKey"
+            value={process.env.NEXT_PUBLIC_STATIC_FORM_KEY}
+          />
           <div>
             <label htmlFor="name">Nome</label>
-            <input id="name" />
+            <input id="name" name="name" />
           </div>
           <div>
             <label htmlFor="email">E-mail</label>
-            <input id="email" />
+            <input id="email" name="email" />
           </div>
           <div>
             <label htmlFor="message">Menssagem</label>
-            <textarea id="message" />
+            <textarea id="message" name="message" />
           </div>
+          <input
+            type="hidden"
+            name="redirectTo"
+            value={process.env.NEXT_PUBLIC_VERCEL_URL}
+          />
           <button>Entrar em contato</button>
         </form>
       </section>
