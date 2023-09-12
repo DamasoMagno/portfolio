@@ -10,6 +10,8 @@ import { client } from "@/libs/apollo";
 import { Header } from "@/components/Header";
 
 import styles from "@/styles/pages/Home.module.scss";
+import { ContactForm } from "@/components/ContactForm";
+import Head from "next/head";
 
 interface HomeProps {
   author: IAuthor;
@@ -27,29 +29,12 @@ export default function Home({ author }: HomeProps) {
     linkToDownlaodFile.click();
   }
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const form = new FormData(e.target);
-
-    const formDataObj = {} as any;
-
-    form.forEach((value, key) => {
-      formDataObj[key] = value;
-    });
-
-    try {
-      await fetch("https://api.staticforms.xyz/submit", {
-        method: "POST",
-        body: JSON.stringify(formDataObj),
-        headers: { "Content-Type": "application/json" },
-      });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
     <>
+      <Head>
+        <title>Home | DamasoMagno</title>
+      </Head>
+
       <Header />
 
       <section className={styles.hero}>
@@ -70,13 +55,18 @@ export default function Home({ author }: HomeProps) {
           <div>
             {author.networks.map((network) => {
               for (const icon of icons.netwoks) {
-                return (
-                  icon.name === network.name && (
-                    <a key={network.id} href={network.url} title={author.name}>
+                if (icon.name === network.name) {
+                  return (
+                    <a 
+                      key={network.id} 
+                      href={network.url} 
+                      target="_blank"
+                      rel="noreferrer"
+                    >
                       {<icon.icon />}
                     </a>
-                  )
-                );
+                  );
+                }
               }
             })}
           </div>
@@ -126,32 +116,7 @@ export default function Home({ author }: HomeProps) {
 
       <section className={styles.joinContact}>
         <h2>Entre em contato</h2>
-
-        <form onSubmit={handleSubmit}>
-          <input
-            type="hidden"
-            name="accessKey"
-            value={process.env.NEXT_PUBLIC_STATIC_FORM_KEY}
-          />
-          <div>
-            <label htmlFor="name">Nome</label>
-            <input id="name" name="name" />
-          </div>
-          <div>
-            <label htmlFor="email">E-mail</label>
-            <input id="email" name="email" />
-          </div>
-          <div>
-            <label htmlFor="message">Menssagem</label>
-            <textarea id="message" name="message" />
-          </div>
-          <input
-            type="hidden"
-            name="redirectTo"
-            value={process.env.NEXT_PUBLIC_VERCEL_URL}
-          />
-          <button>Entrar em contato</button>
-        </form>
+        <ContactForm />
       </section>
     </>
   );
@@ -162,11 +127,9 @@ export const getStaticProps: GetStaticProps = async () => {
     query: AuthorQuery,
   });
 
-  const author: IAuthor = data.author;
-
   return {
     props: {
-      author,
+      author: data.author,
     },
     revalidate: 60 * 60 * 1, // 1 hour
   };

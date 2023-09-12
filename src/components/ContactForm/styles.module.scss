@@ -1,0 +1,54 @@
+.form {
+  margin: 0 auto;
+  max-width: 480px;
+  width: 100%;
+
+  div {
+    display: flex;
+    flex-direction: column;
+
+    & + div {
+      margin-top: 0.85rem;
+    }
+
+    label {
+      font-size: 0.875rem;
+      color: var(--slate-300);
+      margin-bottom: 0.5rem;
+    }
+
+    input,
+    textarea {
+      padding: 0.5rem 0.875rem;
+      background-color: #302f3d;
+      height: 3rem;
+      outline: 0;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      color: var(--slate-300);
+      resize: none;
+
+      &:focus {
+        border: 1px solid var(--slate-300);
+      }
+    }
+
+    textarea {
+      height: 10rem;
+    }
+  }
+
+  button {
+    margin-top: 1rem;
+    background: #302f3d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    color: white;
+    height: 3rem;
+    padding: 0 1rem;
+    border-radius: 8px;
+    margin-left: auto;
+  }
+}

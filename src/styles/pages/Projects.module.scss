@@ -15,9 +15,14 @@
   background-color: #302f3d;
   padding: 0 1rem;
   border-radius: 8px;
+  border: 1px solid transparent;
   margin-bottom: 1rem;
   max-width: 450px;
   width: 90%;
+
+  &:focus-within {
+    border: 1px solid var(--slate-300);
+  }
 
   display: flex;
   align-items: center;
@@ -54,9 +59,9 @@
   flex-wrap: wrap;
 
   button {
-    background-color: rgba($color: #302f3d, $alpha: 0.5);
+    background-color: rgba($color: #2a2936, $alpha: 0.75);
     opacity: .7;
-    color: #fff;
+    color: rgba($color: #FFF, $alpha: .75);
     border-radius: 8px;
     border: 0;
     padding: 0.75rem 1rem;
@@ -69,6 +74,7 @@
 
     &[data-select="true"] {
       background-color: #302f3d;
+      color: #FFF;
     }
   }
 }

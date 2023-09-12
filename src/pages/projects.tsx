@@ -9,6 +9,8 @@ import { ILanguage, IProject } from "@/interfaces";
 
 import { Header } from "@/components/Header";
 import { ProjectModal } from "@/components/ProjectModal";
+import Head from "next/head";
+
 import { Project } from "@/components/Project";
 
 import styles from "@/styles/pages/Projects.module.scss";
@@ -21,12 +23,13 @@ export default function Projects({ languages }: ProjectProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [open, setModalOpen] = useState<boolean>(false);
   const [project, setProject] = useState({} as IProject);
-  
+
   const [projects, setProjects] = useState<IProject[]>([]);
   const [filters, setLanguages] = useState<string[]>([]);
 
-  const languagesFormatted = filters.length ? filters : languages.map(({ name }) => name);
-
+  const languagesFormatted = filters.length
+    ? filters
+    : languages.map(({ name }) => name);
 
   useEffect(() => {
     client
@@ -64,7 +67,7 @@ export default function Projects({ languages }: ProjectProps) {
         query: ProjectsQuery,
         variables: {
           name: inputRef.current?.value,
-          languages: [...languagesFormatted]
+          languages: [...languagesFormatted],
         },
       });
 
@@ -76,6 +79,10 @@ export default function Projects({ languages }: ProjectProps) {
 
   return (
     <>
+      <Head>
+        <title>Projetos | DamasoMagno</title>
+      </Head>
+
       <Header />
 
       <main className={styles.wrapper}>
@@ -127,11 +134,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
     query: LanguagesQuery,
   });
 
-  const languages: ILanguage[] = data.languages;
-
   return {
     props: {
-      languages,
+      languages: data.languages,
     },
   };
 };
