@@ -57,9 +57,9 @@ export default function Home({ author }: HomeProps) {
               for (const icon of icons.netwoks) {
                 if (icon.name === network.name) {
                   return (
-                    <a 
-                      key={network.id} 
-                      href={network.url} 
+                    <a
+                      key={network.id}
+                      href={network.url}
                       target="_blank"
                       rel="noreferrer"
                     >
@@ -93,7 +93,7 @@ export default function Home({ author }: HomeProps) {
 
       <section className={styles.experience}>
         <div>
-          <h2>Habilidades</h2>
+          <h2>Experiências</h2>
 
           <ul>
             {author.experiencies.map((experience: IExperiencie) => {
