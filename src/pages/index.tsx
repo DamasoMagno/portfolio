@@ -17,6 +17,8 @@ interface HomeProps {
   author: IAuthor;
 }
 
+type Icons = keyof typeof icons.languages;
+
 export default function Home({ author }: HomeProps) {
   async function downloadCurriculum() {
     const response = await fetch(author.curriculum.url);
@@ -24,6 +26,7 @@ export default function Home({ author }: HomeProps) {
 
     const url = URL.createObjectURL(responseAsBlob);
     const linkToDownlaodFile = document.createElement("a");
+
     linkToDownlaodFile.href = url;
     linkToDownlaodFile.download = "Curriculo.pdf";
     linkToDownlaodFile.click();
@@ -58,6 +61,7 @@ export default function Home({ author }: HomeProps) {
                 if (icon.name === network.name) {
                   return (
                     <a
+                      title={network.name}
                       key={network.id}
                       href={network.url}
                       target="_blank"
@@ -76,18 +80,26 @@ export default function Home({ author }: HomeProps) {
           <h2>Habilidades</h2>
 
           <ul>
-            {author.languages.map((skill) => {
-              for (const icon of icons.languages) {
-                if (icon.name === skill.name) {
+            {Object.keys(icons.languages).map((iconKey) => {
+              const currentIcon = icons.languages[iconKey as Icons];
+
+              return author.languages.map((skill) => {
+                if (currentIcon.name === skill.name) {
                   return (
-                    <li key={skill.id} title={author.name}>
-                      <icon.icon /> {icon.name}
+                    <li
+                      aria-label={`Tecnologia: ${currentIcon.name}`}
+                      key={skill.id}
+                      title={author.name}
+                    >
+                      {currentIcon.icon} {currentIcon.name}
                     </li>
                   );
                 }
-              }
+                return null; // Retorna `null` para o caso onde a condição não é atendida
+              });
             })}
           </ul>
+
         </div>
       </section>
 
