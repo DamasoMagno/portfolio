@@ -8,8 +8,8 @@ export const projects: Project[] = [
       "Plataforma de gestão de atividades físicas com dashboard completo.",
     tags: ["React", "Next.js", "Tailwind"],
     links: {
-      github: "",
-      demo: "",
+      github: "https://github.com/DamasoMagno/activer",
+      demo: "https://activer.vercel.app/signIn",
     },
   },
   {
@@ -19,8 +19,8 @@ export const projects: Project[] = [
       "Plataforma desenvolvida com foco na gerência da organização de uma escola.",
     tags: ["Typescript", "React", "GraphQL"],
     links: {
-      github: "",
-      demo: "",
+      github: "https://github.com/DamasoMagno/organage-front",
+      demo: "https://organage.vercel.app/",
     },
   },
   {
@@ -29,8 +29,8 @@ export const projects: Project[] = [
     description: "Plataforma de delivery focada em uma confeitaria regional.",
     tags: ["Next.js", "GraphQL", "Styled Components"],
     links: {
-      github: "",
-      demo: "",
+      github: "https://github.com/DamasoMagno/potecake",
+      demo: "https://potecake.vercel.app",
     },
   },
   {
@@ -48,8 +48,8 @@ export const projects: Project[] = [
       "Radix",
     ],
     links: {
-      github: "",
-      demo: "",
+      github: "https://github.com/DamasoMagno/mecart-front",
+      demo: "https://mecart.vercel.app/",
     },
   },
   {
@@ -58,14 +58,15 @@ export const projects: Project[] = [
     description: "Estoquer",
     tags: ["Next.js", "Supabase"],
     links: {
-      github: "",
-      demo: "",
+      github: "https://github.com/DamasoMagno/estoquer-front",
+      demo: "https://estoquer.vercel.app/signIn",
     },
   },
   {
     title: "BridClub",
     category: ["Frontend", "Backend", "Full Stack", "All"],
-    description: "Barbearia.",
+    description:
+      "Sistema voltado para a gestão de barbearias, com dashboard para os barbeiros e clientes.",
     tags: [
       "Next.js",
       "Tailwind CSS",
@@ -77,7 +78,7 @@ export const projects: Project[] = [
     ],
     links: {
       github: "",
-      demo: "",
+      demo: "https://www.bridclub.com/",
     },
   },
 ];
