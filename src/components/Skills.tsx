@@ -5,7 +5,21 @@ import { useEffect, useRef, useState } from "react";
 const skillCategories = [
   {
     title: "Frontend",
-    tags: ["React", "Next.js", "TypeScript", "Tailwind CSS", "HTML5", "CSS3", "Styled Components"],
+    tags: [
+      "React",
+      "Next.js",
+      "TypeScript",
+      "Tailwind CSS",
+      "HTML5",
+      "CSS3",
+      "Styled Components",
+      "Shadcn UI",
+      "Radix",
+      "Zod",
+      "React Hook Form",
+      "Framer Motion",
+      "Zustand",
+    ],
     layout: "grid-4-3",
   },
   {
@@ -15,17 +29,17 @@ const skillCategories = [
   },
   {
     title: "Backend",
-    tags: ["Node.js", "Express", "NestJS", "Java", "Spring Boot"],
+    tags: ["Node.js", "Express", "Fastify", "Java", "Spring Boot"],
     layout: "grid-4-1",
   },
   {
     title: "Banco de Dados",
-    tags: ["PostgreSQL", "MongoDB", "MySQL", "Firebase"],
+    tags: ["PostgreSQL", "MongoDB", "MySQL", "Firebase", "Supabase"],
     layout: "row",
   },
   {
     title: "DevOps & Ferramentas",
-    tags: ["Git", "Docker", "Figma", "Vercel"],
+    tags: ["Git", "Docker", "Figma", "Vercel", "Cloudflare", "Render"],
     layout: "row",
   },
 ];
@@ -38,7 +52,15 @@ function SkillTag({ name }: { name: string }) {
   );
 }
 
-function SkillCard({ category, visible, index }: { category: typeof skillCategories[0]; visible: boolean; index: number }) {
+function SkillCard({
+  category,
+  visible,
+  index,
+}: {
+  category: (typeof skillCategories)[0];
+  visible: boolean;
+  index: number;
+}) {
   const renderTags = () => {
     if (category.layout === "grid-4-3") {
       return (
@@ -56,7 +78,7 @@ function SkillCard({ category, visible, index }: { category: typeof skillCategor
         </div>
       );
     }
-    
+
     if (category.layout === "grid-4-1") {
       return (
         <div className="relative w-[340px] h-[64px]">
@@ -73,7 +95,7 @@ function SkillCard({ category, visible, index }: { category: typeof skillCategor
         </div>
       );
     }
-    
+
     return (
       <div className="flex flex-wrap gap-2">
         {category.tags.map((tag, i) => (
@@ -86,9 +108,7 @@ function SkillCard({ category, visible, index }: { category: typeof skillCategor
   return (
     <div
       className={`w-[405px] p-8 rounded-2xl bg-[#18181b] border border-white/[0.05] transition-all duration-500 hover:border-white/10 hover:bg-[#1a1a1e] hover:shadow-xl hover:-translate-y-1 ${
-        visible
-          ? "opacity-100 translate-y-0"
-          : "opacity-0 translate-y-8"
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       style={{ transitionDelay: `${index * 100}ms` }}
     >
@@ -114,7 +134,7 @@ export function Skills() {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (ref.current) {
@@ -125,7 +145,11 @@ export function Skills() {
   }, []);
 
   return (
-    <section id="skills" ref={ref} className="py-20 px-[134px] border-t border-white/[0.05]">
+    <section
+      id="skills"
+      ref={ref}
+      className="py-20 px-[134px] border-t border-white/[0.05]"
+    >
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col items-center gap-12">
           <div
@@ -133,7 +157,9 @@ export function Skills() {
               visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <h2 className="text-[30px] font-bold text-[#e1e1e6] leading-[1.2]">Minhas Habilidades</h2>
+            <h2 className="text-[30px] font-bold text-[#e1e1e6] leading-[1.2]">
+              Minhas Habilidades
+            </h2>
             <div className="w-[64px] h-[4px] bg-[#8257e6] rounded-full" />
           </div>
 
