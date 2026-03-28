@@ -1,39 +1,60 @@
 "use client";
 
+import type { ProjectWorkType } from "@/interfaces/project";
 import { useEffect, useRef, useState } from "react";
 
-const experiences = [
+const workTypeLabels: Record<ProjectWorkType, string> = {
+  freelance: "Freelance",
+  emprego: "Emprego",
+  projeto_pessoal: "Projeto pessoal",
+  estagio: "Estágio",
+};
+
+type ExperienceItem = {
+  role: string;
+  company: string;
+  period: string;
+  description: string;
+  tags: string[];
+  workType: ProjectWorkType;
+};
+
+const experiences: ExperienceItem[] = [
   {
-    role: "Desenvolvedor Mobile",
-    company: "HackCoda",
-    period: "2023 - Presente",
+    role: "Desenvolvedor Full Stack",
+    company: "Freet Mais",
+    period: "2024 - Presente",
     description:
       "Atuação no desenvolvimento e manutenção de interfaces, garantindo a melhor experiência para o usuário final.",
-    tags: ["React Native", "Expo", "TypeScript"],
+    tags: ["React Native", "Expo", "TypeScript", "Next.js", "Spring Boot", "AWS", "Docker", "PostgreSQL"],
+    workType: "emprego",
   },
   {
     role: "Desenvolvedor Full Stack",
     company: "Freelancer",
-    period: "2022 - 2023",
+    period: "2024 - 2024",
     description:
       "Desenvolvi uma plataforma para uma farmácia, composta por um website e um aplicativo. O objetivo era otimizar o controle das visitas realizadas pela equipe farmacêutica aos consultórios médicos. Implementei painéis com relatórios detalhados.",
-    tags: ["React", "Node.js", "PostgreSQL"],
+    tags: ["React", "Node.js", "PostgreSQL", "React Native", "Expo", "TypeScript"],
+    workType: "freelance",
   },
   {
     role: "Desenvolvedor Frontend",
     company: "Projeto E-commerce",
-    period: "2022",
+    period: "2023 - 2024",
     description:
       "Desenvolvi um e-commerce especializado em eletrônicos. Implementei carrinho de compras, cupons de desconto e integração com CMS Hygraph, além de automação de pedidos via WhatsApp.",
     tags: ["Next.js", "Hygraph", "WhatsApp API"],
+    workType: "freelance",
   },
   {
-    role: "Desenvolvedor Backend",
+    role: "Desenvolvedor Full Stack",
     company: "Projeto Corporativo",
-    period: "2021",
+    period: "2021 - 2022",
     description:
       "Desenvolvi um painel de controle para auxiliar no gerenciamento das resoluções de problemas técnicos nas unidades filiais.",
-    tags: ["Node.js", "Express", "MySQL"],
+    tags: ["Next.js", "Spring Boot", "PostgreSQL", "Docker"],
+    workType: "estagio",
   },
 ];
 
@@ -86,7 +107,14 @@ export function Experience() {
               >
                 <div className="flex flex-col gap-4">
                   <div className="flex items-center justify-between flex-wrap gap-2">
-                    <h3 className="text-lg font-bold text-[#e1e1e6]">{exp.role}</h3>
+                    <div className="flex items-center gap-3 flex-wrap">
+                      <h3 className="text-lg font-bold text-[#e1e1e6]">
+                        {exp.role}
+                      </h3>
+                      <span className="px-3 py-1.5 rounded-full bg-white/[0.1] backdrop-blur-sm border border-white/10 text-xs font-medium text-[#e1e1e6]">
+                        {workTypeLabels[exp.workType]}
+                      </span>
+                    </div>
                     <span className="px-4 py-1.5 rounded-full bg-[#121214] border border-white/[0.05] text-sm text-[#a8a8b3]">
                       {exp.period}
                     </span>

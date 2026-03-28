@@ -39,23 +39,13 @@ export function About() {
 
           <div className="flex flex-col gap-6 text-center">
             <p className="text-lg text-[#a8a8b3] leading-[1.625]">
-              Sou Desenvolvedor Full Stack com foco em React, Next.js, React Native, Expo e Node.js.
-              Trabalho criando aplicações web e mobile com total atenção à performance, usabilidade
-              e boas práticas de código.
+              Desenvolvedor Full Stack com 2+ anos de experiência em React, Next.js, Spring Boot, Node.js, React Native e PostgreSQL.
             </p>
 
             <p className="text-lg text-[#a8a8b3] leading-[1.625]">
-              Atualmente, atuo como Desenvolvedor Mobile, utilizando React Native e Expo para
-              construir aplicativos modernos e escaláveis. Também trago uma bagagem de{" "}
-              <span className="text-[#e1e1e6] font-bold">3 anos como freelancer</span>,
-              experiência que ampliou minha visão de produto e me permitiu resolver
-              desafios reais para diversos clientes.
-            </p>
-
-            <p className="text-lg text-[#a8a8b3] leading-[1.625]">
-              Minha trajetória começou como estagiário atuando com React e Spring Boot. Desde
-              então, sigo em evolução constante, buscando aperfeiçoar o que já sei e aprender novas
-              tecnologias que me tornem um profissional cada vez mais completo.
+              Atualmente trabalho no desenvolvimento de um sistema de logística utilizando Next, Spring Boot e React Native. Também tenho experiência como freelancer, 
+              entregando projetos para startups e empresas de diferentes segmentos desde e-commerces até dashboards, o que me deu versatilidade técnica e visão estratégica 
+              sobre produto e negócio.
             </p>
           </div>
         </div>

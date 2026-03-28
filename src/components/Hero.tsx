@@ -13,7 +13,7 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="min-h-screen flex flex-col items-center justify-center px-6 pt-20 pb-10">
+    <section className="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center px-6 pt-20 pb-10">
       <div className="flex flex-col items-center gap-8 max-w-[576px] mx-auto">
         <div
           className={`relative transition-all duration-700 ${

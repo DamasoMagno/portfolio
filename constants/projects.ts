@@ -3,7 +3,8 @@ import { Project } from "@/interfaces/project";
 export const projects: Project[] = [
   {
     title: "Activer",
-    category: ["Frontend", "All"],
+    category: ["Frontend"],
+    workType: "projeto_pessoal",
     description:
       "Plataforma de gestão de atividades físicas com dashboard completo.",
     tags: ["React", "Next.js", "Tailwind"],
@@ -14,7 +15,8 @@ export const projects: Project[] = [
   },
   {
     title: "Organage",
-    category: ["Frontend", "All"],
+    category: ["Frontend"],
+    workType: "projeto_pessoal",
     description:
       "Plataforma desenvolvida com foco na gerência da organização de uma escola.",
     tags: ["Typescript", "React", "GraphQL"],
@@ -24,8 +26,21 @@ export const projects: Project[] = [
     },
   },
   {
+    title: "TopBurguer API",
+    category: ["Backend"],
+    workType: "freelance",
+    description:
+      "API desenvolvida para o sistema de delivery TopBurguer.",
+    tags: ["Java", "Spring Boot", "PostgreSQL", "Docker", "OAuth"],
+    links: {
+      github: "https://github.com/DamasoMagno/topburguer-api",
+      demo: "",
+    },
+  },	
+  {
     title: "PoteCake",
-    category: ["Frontend", "All"],
+    category: ["Frontend"],
+    workType: "freelance",
     description: "Plataforma de delivery focada em uma confeitaria regional.",
     tags: ["Next.js", "GraphQL", "Styled Components"],
     links: {
@@ -33,9 +48,10 @@ export const projects: Project[] = [
       demo: "https://potecake.vercel.app",
     },
   },
-  {
+  { 
     title: "MeCart",
-    category: ["Frontend", "All"],
+    category: ["Frontend"],
+    workType: "projeto_pessoal",
     description:
       "Sistema de criação de carrinho e inserção de produtos para controle dos gastos",
     tags: [
@@ -54,7 +70,8 @@ export const projects: Project[] = [
   },
   {
     title: "Estoquer",
-    category: ["Frontend", "All"],
+    category: ["Frontend"],
+    workType: "projeto_pessoal",
     description: "Estoquer",
     tags: ["Next.js", "Supabase"],
     links: {
@@ -64,7 +81,8 @@ export const projects: Project[] = [
   },
   {
     title: "BridClub",
-    category: ["Frontend", "Backend", "Full Stack", "All"],
+    category: ["Full Stack"],
+    workType: "emprego",
     description:
       "Sistema voltado para a gestão de barbearias, com dashboard para os barbeiros e clientes.",
     tags: [

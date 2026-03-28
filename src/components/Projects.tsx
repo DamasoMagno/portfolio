@@ -1,10 +1,18 @@
 "use client";
 
+import type { ProjectWorkType } from "@/interfaces/project";
 import { ExternalLink, Github } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { projects } from "../../constants/projects";
 
-const categories = ["Frontend", "Mobile", "Backend", "Full Stack"];
+const workTypeLabels: Record<ProjectWorkType, string> = {
+  freelance: "Freelance",
+  emprego: "Emprego",
+  projeto_pessoal: "Projeto pessoal",
+  estagio: "Estágio",
+};
+
+const categories = ["Full Stack", "Frontend", "Mobile", "Backend"];
 type Category = (typeof categories)[number] | "";
 
 export function Projects() {
@@ -63,7 +71,7 @@ export function Projects() {
           </div>
 
           <div
-            className={`flex items-center gap-2 p-1 bg-[#202024] rounded-xl border border-white/[0.05] shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-700 delay-200 ${
+            className={`flex flex-wrap justify-center items-center gap-2 p-1 bg-[#202024] rounded-xl border border-white/[0.05] shadow-[0_1px_4px_rgba(0,0,0,0.05)] transition-all duration-700 delay-200 ${
               visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
@@ -100,6 +108,12 @@ export function Projects() {
                   <div className="absolute inset-0 flex items-center justify-center">
                     <span className="text-5xl font-bold text-[#e1e1e6]/10 group-hover:text-[#e1e1e6]/20 transition-colors duration-500">
                       {project.title.charAt(0)}
+                    </span>
+                  </div>
+
+                  <div className="absolute left-4 top-4 px-3 py-1.5 rounded-full bg-white/[0.1] backdrop-blur-sm border border-white/10">
+                    <span className="text-xs font-medium text-[#e1e1e6]">
+                      {workTypeLabels[project.workType]}
                     </span>
                   </div>
 

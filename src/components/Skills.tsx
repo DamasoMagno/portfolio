@@ -20,27 +20,22 @@ const skillCategories = [
       "Framer Motion",
       "Zustand",
     ],
-    layout: "grid-4-3",
   },
   {
     title: "Mobile",
     tags: ["React Native", "Expo", "Android Studio"],
-    layout: "row",
   },
   {
     title: "Backend",
     tags: ["Node.js", "Express", "Fastify", "Java", "Spring Boot"],
-    layout: "grid-4-1",
   },
   {
     title: "Banco de Dados",
     tags: ["PostgreSQL", "MongoDB", "MySQL", "Firebase", "Supabase"],
-    layout: "row",
   },
   {
     title: "DevOps & Ferramentas",
     tags: ["Git", "Docker", "Figma", "Vercel", "Cloudflare", "Render"],
-    layout: "row",
   },
 ];
 
@@ -62,52 +57,18 @@ function SkillCard({
   index: number;
 }) {
   const renderTags = () => {
-    if (category.layout === "grid-4-3") {
       return (
-        <div className="relative w-[340px] h-[64px]">
-          <div className="absolute top-0 left-0 flex flex-wrap gap-2">
-            {category.tags.slice(0, 4).map((tag, i) => (
+        <div className="flex flex-wrap gap-2">
+            {category.tags.map((tag, i) => (
               <SkillTag key={i} name={tag} />
             ))}
-          </div>
-          <div className="absolute bottom-0 left-0 flex flex-wrap gap-2">
-            {category.tags.slice(4).map((tag, i) => (
-              <SkillTag key={i + 4} name={tag} />
-            ))}
-          </div>
         </div>
       );
-    }
-
-    if (category.layout === "grid-4-1") {
-      return (
-        <div className="relative w-[340px] h-[64px]">
-          <div className="absolute top-0 left-0 flex flex-wrap gap-2">
-            {category.tags.slice(0, 4).map((tag, i) => (
-              <SkillTag key={i} name={tag} />
-            ))}
-          </div>
-          <div className="absolute bottom-0 left-0 flex gap-2">
-            {category.tags.slice(4).map((tag, i) => (
-              <SkillTag key={i + 4} name={tag} />
-            ))}
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="flex flex-wrap gap-2">
-        {category.tags.map((tag, i) => (
-          <SkillTag key={i} name={tag} />
-        ))}
-      </div>
-    );
   };
 
   return (
     <div
-      className={`w-[405px] p-8 rounded-2xl bg-[#18181b] border border-white/[0.05] transition-all duration-500 hover:border-white/10 hover:bg-[#1a1a1e] hover:shadow-xl hover:-translate-y-1 ${
+      className={`p-8 rounded-2xl bg-[#18181b] border border-white/[0.05] transition-all duration-500 hover:border-white/10 hover:bg-[#1a1a1e] hover:shadow-xl hover:-translate-y-1 ${
         visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       style={{ transitionDelay: `${index * 100}ms` }}
@@ -148,7 +109,7 @@ export function Skills() {
     <section
       id="skills"
       ref={ref}
-      className="py-20 px-[134px] border-t border-white/[0.05]"
+      className="py-20 px-6 md:px-[134px] border-t border-white/[0.05]"
     >
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col items-center gap-12">
@@ -163,27 +124,15 @@ export function Skills() {
             <div className="w-[64px] h-[4px] bg-[#8257e6] rounded-full" />
           </div>
 
-          <div className="flex flex-col gap-6">
-            <div className="flex gap-6">
-              {skillCategories.slice(0, 3).map((category, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {skillCategories.map((category, index) => (
                 <SkillCard
                   key={index}
                   category={category}
                   visible={visible}
                   index={index}
                 />
-              ))}
-            </div>
-            <div className="flex gap-6">
-              {skillCategories.slice(3).map((category, index) => (
-                <SkillCard
-                  key={index + 3}
-                  category={category}
-                  visible={visible}
-                  index={index + 3}
-                />
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </div>
