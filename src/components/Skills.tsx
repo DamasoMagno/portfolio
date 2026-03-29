@@ -19,15 +19,41 @@ const skillCategories = [
       "React Hook Form",
       "Framer Motion",
       "Zustand",
+      "Tanstack Query",
+      "Design Systems",
     ],
   },
   {
     title: "Mobile",
-    tags: ["React Native", "Expo", "Android Studio"],
+    tags: [
+      "React Native",
+      "Expo",
+      "Android Studio",
+      "Async Storage",
+      "Push Notifications",
+      "React Navigation",
+      "Play Store",
+      "App Store",
+    ],
   },
   {
     title: "Backend",
-    tags: ["Node.js", "Express", "Fastify", "Java", "Spring Boot"],
+    tags: [
+      "Node.js",
+      "Express",
+      "Fastify",
+      "Java",
+      "Spring Boot",
+      "Jest",
+      "JPA",
+      "Hibernate",
+      "Scalar",
+      "Swagger",
+      "JWT",
+      "Prisma",
+      "SOLID",
+      "TDD",
+    ],
   },
   {
     title: "Banco de Dados",
@@ -35,7 +61,16 @@ const skillCategories = [
   },
   {
     title: "DevOps & Ferramentas",
-    tags: ["Git", "Docker", "Figma", "Vercel", "Cloudflare", "Render"],
+    tags: [
+      "Git",
+      "Docker",
+      "Figma",
+      "Vercel",
+      "Cloudflare",
+      "Render",
+      "CI/CD",
+      "AWS",
+    ],
   },
 ];
 
@@ -57,13 +92,13 @@ function SkillCard({
   index: number;
 }) {
   const renderTags = () => {
-      return (
-        <div className="flex flex-wrap gap-2">
-            {category.tags.map((tag, i) => (
-              <SkillTag key={i} name={tag} />
-            ))}
-        </div>
-      );
+    return (
+      <div className="flex flex-wrap gap-2">
+        {category.tags.map((tag, i) => (
+          <SkillTag key={i} name={tag} />
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -125,13 +160,13 @@ export function Skills() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {skillCategories.map((category, index) => (
-                <SkillCard
-                  key={index}
-                  category={category}
-                  visible={visible}
-                  index={index}
-                />
+            {skillCategories.map((category, index) => (
+              <SkillCard
+                key={index}
+                category={category}
+                visible={visible}
+                index={index}
+              />
             ))}
           </div>
         </div>

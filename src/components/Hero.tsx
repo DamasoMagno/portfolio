@@ -49,7 +49,8 @@ export function Hero() {
             mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          Transformando ideias complexas em soluções digitais completas, do frontend ao backend.
+          Transformando ideias complexas em soluções digitais completas, do
+          frontend ao backend.
         </p>
 
         <div
@@ -64,9 +65,11 @@ export function Hero() {
 
           <div className="flex items-center gap-4">
             {[
-              { icon: Github, href: "#" },
-              { icon: Linkedin, href: "#" },
-              { icon: Twitter, href: "#" },
+              { icon: Github, href: "https://github.com/DamasoMagno" },
+              {
+                icon: Linkedin,
+                href: "https://www.linkedin.com/in/damasomagno/",
+              },
             ].map((social, index) => (
               <a
                 key={index}
