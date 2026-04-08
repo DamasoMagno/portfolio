@@ -12,7 +12,7 @@ const workTypeLabels: Record<ProjectWorkType, string> = {
   estagio: "Estágio",
 };
 
-const categories = ["Full Stack", "Frontend", "Mobile", "Backend"];
+const categories = ["Full Stack", "Frontend", "Backend"];
 type Category = (typeof categories)[number] | "";
 
 export function Projects() {
