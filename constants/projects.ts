@@ -29,14 +29,13 @@ export const projects: Project[] = [
     title: "TopBurguer API",
     category: ["Backend"],
     workType: "freelance",
-    description:
-      "API desenvolvida para o sistema de delivery TopBurguer.",
+    description: "API desenvolvida para o sistema de delivery TopBurguer.",
     tags: ["Java", "Spring Boot", "PostgreSQL", "Docker", "OAuth"],
     links: {
       github: "https://github.com/DamasoMagno/topburguer-api",
       demo: "",
     },
-  },	
+  },
   {
     title: "PoteCake",
     category: ["Frontend"],
@@ -48,7 +47,27 @@ export const projects: Project[] = [
       demo: "https://potecake.vercel.app",
     },
   },
-  { 
+  {
+    title: "order-management-challenge",
+    category: ["Backend"],
+    workType: "projeto_pessoal",
+    description: "Desafio técnico para com foco em gerenciamento de pedidos.",
+    tags: [
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Docker",
+      "Vitest",
+      "Zod",
+      "TypeScript",
+      "SOLID",
+    ],
+    links: {
+      github: "https://github.com/DamasoMagno/order-management-challenge",
+      demo: "",
+    },
+  },
+  {
     title: "MeCart",
     category: ["Frontend"],
     workType: "projeto_pessoal",

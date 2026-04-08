@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const skillCategories = [
+const skillCategories: { title: string; tags: string[] }[] = [
   {
     title: "Frontend",
     tags: [
