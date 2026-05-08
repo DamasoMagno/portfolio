@@ -3,7 +3,13 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Damaso Magno - Full Stack Developer",
-  description: "Portfólio de Damaso Magno, Desenvolvedor Full Stack com foco em React, Next.js, React Native, Expo e Node.js.",
+  description:
+    "Portfólio de Damaso Magno, Desenvolvedor Full Stack com foco em React, Next.js, React Native, Expo e Node.js.",
+
+  other: {
+    "impact-site-verification":
+      "e16bf2cd-e912-46b9-a99a-f306585972e5",
+  },
 };
 
 export default function RootLayout({
