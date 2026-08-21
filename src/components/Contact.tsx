@@ -4,7 +4,7 @@ import { Mail, MessageCircle, Send } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
 export function Contact() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -98,7 +98,7 @@ export function Contact() {
 
             <div className="flex flex-col gap-4">
               <a
-                href="mailto:damasomagno@gmail.com"
+                href="mailto:damaso.magn@gmail.com"
                 className="group flex items-center gap-4 p-4 rounded-xl bg-[#18181b] border border-white/[0.05] shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:bg-white/[0.02] hover:border-white/10 transition-all duration-300"
               >
                 <div className="w-12 h-12 rounded-lg bg-[#8257e6]/20 flex items-center justify-center">
@@ -107,7 +107,7 @@ export function Contact() {
                 <div className="flex flex-col">
                   <span className="text-sm font-medium text-[#a8a8b3]">E-mail</span>
                   <span className="text-base font-medium text-[#e1e1e6] group-hover:text-[#8257e6] transition-colors duration-300">
-                    damasomagno@gmail.com
+                    damaso.magn@gmail.com
                   </span>
                 </div>
               </a>

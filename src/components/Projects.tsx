@@ -16,7 +16,7 @@ const categories = ["Full Stack", "Frontend", "Backend"];
 type Category = (typeof categories)[number] | "";
 
 export function Projects() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const [activeCategory, setActiveCategory] = useState<Category>("Full Stack");
   const ref = useRef<HTMLDivElement>(null);
 

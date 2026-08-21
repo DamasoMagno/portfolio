@@ -1,28 +1,37 @@
 "use client";
 
-import { Play, Book, Code2 } from "lucide-react";
+import { Book, Code2, ExternalLink, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const courses = [
   {
-    title: "React Native Expert",
-    description: "Domine a criação de apps mobile do zero ao avançado com React Native e Expo.",
-    icon: Play,
-  },
-  {
-    title: "Full Stack Master",
-    description: "Aprenda a stack completa de JavaScript, do Frontend ao Backend com Node.js.",
+    title: "Curso Web Moderno Completo com JavaScript + Projetos",
+    description:
+      "Do HTML ao React, Vue, Node e bancos de dados — formação completa de desenvolvimento web com projetos reais, da Cod3r.",
+    instructor: "Leonardo Leitão · Cod3r",
+    href: "https://www.udemy.com/course/curso-web/?couponCode=CP260817G1",
     icon: Code2,
   },
   {
-    title: "Clean Code & Architecture",
-    description: "Melhore a qualidade do seu código e aprenda padrões de arquitetura corporativa.",
+    title: "The Complete JavaScript Course",
+    description:
+      "JavaScript do zero ao avançado: fundamentos, ES6+, assíncrono, OOP e projetos práticos para dominar a linguagem.",
+    instructor: "Jonas Schmedtmann",
+    href: "https://www.udemy.com/course/the-complete-javascript-course/",
+    icon: Play,
+  },
+  {
+    title: "JavaScript Ninja",
+    description:
+      "Aprofunda JavaScript com foco em fundamentos, boa prática e domínio real da linguagem — excelente para ir além do básico.",
+    instructor: "Fernando Daciuk",
+    href: "https://www.udemy.com/course/curso-javascript-ninja/",
     icon: Book,
   },
 ];
 
 export function Recommendations() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,7 +42,7 @@ export function Recommendations() {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (ref.current) {
@@ -44,7 +53,11 @@ export function Recommendations() {
   }, []);
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-white/[0.05] opacity-60">
+    <section
+      id="recommendations"
+      ref={ref}
+      className="py-20 px-6 border-t border-white/[0.05]"
+    >
       <div className="max-w-[1280px] mx-auto">
         <div className="flex flex-col items-center gap-12">
           <div
@@ -61,15 +74,19 @@ export function Recommendations() {
               Recomendações de Estudo
             </h2>
             <p className="text-xs text-[#a8a8b3] text-center max-w-[400px] leading-[1.33]">
-              Cursos de alta qualidade que indico para quem busca acelerar o aprendizado.
+              Cursos de alta qualidade que indico para quem busca acelerar o
+              aprendizado.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
             {courses.map((course, index) => (
-              <div
-                key={index}
-                className={`p-6 rounded-2xl bg-[#18181b] border border-[#e5e7eb]/20 flex flex-col gap-4 transition-all duration-500 hover:border-[#e5e7eb]/30 hover:-translate-y-1 ${
+              <a
+                key={course.href}
+                href={course.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`p-6 rounded-2xl bg-[#18181b] border border-[#e5e7eb]/20 flex flex-col gap-4 transition-all duration-500 hover:border-[#8257e6]/40 hover:-translate-y-1 ${
                   visible
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
@@ -78,15 +95,19 @@ export function Recommendations() {
               >
                 <div className="flex items-center justify-between">
                   <course.icon className="w-12 h-12 text-[#8257e6]" />
-                  <span className="px-3 py-1 rounded-md bg-[#8257e6]/20 text-xs font-medium text-[#8257e6]">
-                    INDISPONÍVEL
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-md bg-[#8257e6]/20 text-xs font-medium text-[#8257e6]">
+                    Udemy
+                    <ExternalLink className="w-3 h-3" />
                   </span>
                 </div>
-                <h3 className="text-sm font-bold text-[#e1e1e6]">{course.title}</h3>
+                <h3 className="text-sm font-bold text-[#e1e1e6]">
+                  {course.title}
+                </h3>
+                <p className="text-xs text-[#8257e6]">{course.instructor}</p>
                 <p className="text-xs text-[#a8a8b3] leading-[1.62]">
                   {course.description}
                 </p>
-              </div>
+              </a>
             ))}
           </div>
         </div>

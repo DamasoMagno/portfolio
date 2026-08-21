@@ -16,50 +16,90 @@ type ExperienceItem = {
   period: string;
   description: string;
   tags: string[];
+  tasks: string[];
   workType: ProjectWorkType;
 };
 
 const experiences: ExperienceItem[] = [
   {
     role: "Desenvolvedor Full Stack",
-    company: "Freet Mais",
-    period: "2024 - Presente",
+    company: "Frete Mais",
+    period: "Nov 2024 — Presente",
     description:
-      "Atuação no desenvolvimento e manutenção de interfaces, garantindo a melhor experiência para o usuário final.",
-    tags: ["React Native", "Expo", "TypeScript", "Next.js", "Spring Boot", "AWS", "Docker", "PostgreSQL"],
+      "Atuo como Desenvolvedor Full Stack em uma logtech, no desenvolvimento de uma plataforma de logística que conecta empresas e motoristas, desde os estágios iniciais do produto. Comecei como Desenvolvedor Mobile (nov 2024 — nov 2025) e, em seguida, passei a atuar também no backend e no frontend web. Trabalho com Java 17, Spring Boot e Nest no backend, Next.js e React Native com Expo no frontend web e mobile. Londrina, Paraná · Remoto.",
+    tasks: [
+      "Implemento e evoluo funcionalidades no frontend web e no backend, incluindo autenticação, documentos e fluxos de negócio.",
+      "Desenvolvo e integro APIs REST, pagamentos e serviços externos.",
+      "Atuo em melhorias de performance, refatoração e estabilidade em produção, com monitoramento de erros e pipelines de CI.",
+      "Garanto qualidade com testes e logging estruturado para observabilidade da aplicação.",
+    ],
+    tags: [
+      "Java 17",
+      "Spring Boot",
+      "Nest",
+      "Next.js",
+      "React Native",
+      "Expo",
+      "TypeScript",
+    ],
     workType: "emprego",
   },
   {
     role: "Desenvolvedor Full Stack",
-    company: "Freelancer",
-    period: "2024 - 2024",
+    company: "ClicaEPede",
+    period: "Ago 2024 — Nov 2024",
     description:
-      "Desenvolvi uma plataforma para uma farmácia, composta por um website e um aplicativo. O objetivo era otimizar o controle das visitas realizadas pela equipe farmacêutica aos consultórios médicos. Implementei painéis com relatórios detalhados.",
-    tags: ["React", "Node.js", "PostgreSQL", "React Native", "Expo", "TypeScript"],
-    workType: "freelance",
-  },
-  {
-    role: "Desenvolvedor Frontend",
-    company: "Projeto E-commerce",
-    period: "2023 - 2024",
-    description:
-      "Desenvolvi um e-commerce especializado em eletrônicos. Implementei carrinho de compras, cupons de desconto e integração com CMS Hygraph, além de automação de pedidos via WhatsApp.",
-    tags: ["Next.js", "Hygraph", "WhatsApp API"],
+      "Atuei na evolução de um cardápio digital para restaurante português, assumindo um projeto já existente e focando em performance, acessibilidade e experiência de uso. Portugal · Remoto.",
+    tasks: [
+      "Refatorei a aplicação de Next.js para React, com melhoria de ~100% na performance e estrutura mais simples.",
+      "Melhorei acessibilidade e responsividade, tornando a navegação mais clara em desktop e mobile.",
+      "Refatorei regras de negócio no frontend, corrigi bugs e implementei novas funcionalidades.",
+      "Integrei o cardápio ao Strapi e PostgreSQL para gestão do conteúdo.",
+    ],
+    tags: ["React.js", "Strapi", "PostgreSQL"],
     workType: "freelance",
   },
   {
     role: "Desenvolvedor Full Stack",
-    company: "Projeto Corporativo",
-    period: "2021 - 2022",
+    company: "Prista Fórmulas",
+    period: "Fev 2024 — Ago 2024",
     description:
-      "Desenvolvi um painel de controle para auxiliar no gerenciamento das resoluções de problemas técnicos nas unidades filiais.",
-    tags: ["Next.js", "Spring Boot", "PostgreSQL", "Docker"],
+      "Desenvolvi uma plataforma para farmácia de manipulação voltada ao controle de visitas médicas — website/painel e aplicativo em React Native — com análise dos dados coletados em campo. Itapipoca, Ceará · Remoto.",
+    tasks: [
+      "Desenvolvi o aplicativo em React Native (Expo) para coleta de dados em campo e o painel web de gestão.",
+      "Entreguei dashboard com indicadores, gráficos, metas, buscas e filtros.",
+      "Implementei cadastros, validações, APIs REST, paginação com cache e regras de negócio da operação.",
+    ],
+    tags: ["React.js", "TypeScript", "React Native", "Expo"],
+    workType: "freelance",
+  },
+  {
+    role: "Desenvolvedor Full Stack",
+    company: "Newbyte",
+    period: "Nov 2023 — Jan 2024",
+    description:
+      "Desenvolvi um e-commerce de eletrônicos, atuando na interface, integrações e fluxos de compra. Itapipoca, Ceará · Remoto.",
+    tasks: [
+      "Implementei catálogo, carrinho, cupons, autenticação e checkout.",
+      "Estruturei os fluxos entre frontend, backend e serviços externos (CMS, WhatsApp e PIX).",
+    ],
+    tags: ["CSS", "TypeScript"],
+    workType: "freelance",
+  },
+  {
+    role: "Desenvolvedor Full Stack",
+    company: "Paypercash",
+    period: "Set 2021 — Jan 2022",
+    description:
+      "Desenvolvi um sistema de Help Desk para gestão de suporte técnico focado em unidades de saúde e pronto atendimento. Implementei o fluxo completo: interface para abertura de chamados nas unidades e painel administrativo para os técnicos realizarem a triagem e atendimento das solicitações. Itapipoca, Ceará · Presencial.",
+    tasks: [],
+    tags: ["Spring Boot", "CSS"],
     workType: "estagio",
   },
 ];
 
 export function Experience() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -70,7 +110,7 @@ export function Experience() {
           observer.disconnect();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (ref.current) {
@@ -81,7 +121,11 @@ export function Experience() {
   }, []);
 
   return (
-    <section ref={ref} className="py-20 px-6 border-t border-white/[0.05]">
+    <section
+      id="experience"
+      ref={ref}
+      className="py-20 px-6 border-t border-white/[0.05]"
+    >
       <div className="max-w-[896px] mx-auto">
         <div className="flex flex-col items-center gap-12">
           <div
@@ -120,9 +164,21 @@ export function Experience() {
                     </span>
                   </div>
 
+                  <p className="text-sm font-medium text-[#8257e6]">
+                    {exp.company}
+                  </p>
+
                   <p className="text-base text-[#a8a8b3] leading-[1.625]">
                     {exp.description}
                   </p>
+
+                  {exp.tasks.length > 0 && (
+                    <ul className="flex flex-col gap-2 list-disc pl-5 text-sm text-[#a8a8b3] leading-[1.625]">
+                      {exp.tasks.map((task) => (
+                        <li key={task}>{task}</li>
+                      ))}
+                    </ul>
+                  )}
 
                   <div className="flex flex-wrap gap-2">
                     {exp.tags.map((tag, tagIndex) => (

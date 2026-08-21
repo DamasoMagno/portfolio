@@ -1,15 +1,13 @@
 "use client";
 
-import { Download, Github, Linkedin, Twitter, ChevronDown } from "lucide-react";
+import { Download, Github, Linkedin } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export function Hero() {
-  const [mounted, setMounted] = useState(false);
-  const [avatarLoaded, setAvatarLoaded] = useState(false);
+  const [mounted, setMounted] = useState(true);
 
   useEffect(() => {
     setMounted(true);
-    setTimeout(() => setAvatarLoaded(true), 200);
   }, []);
 
   return (
@@ -23,10 +21,9 @@ export function Hero() {
           <div className="absolute inset-0 bg-[#8257e6]/20 rounded-[2rem] blur-2xl scale-90" />
           <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-[2rem] overflow-hidden border-2 border-white/[0.1] shadow-2xl bg-[#202024] z-10 hover:scale-105 transition-transform duration-500">
             <img
-              src="https://github.com/DamasoMagno.png"
+              src="/avatar.jpg"
               alt="Damaso Magno"
               className="w-full h-full object-cover"
-              onLoad={() => setAvatarLoaded(true)}
             />
           </div>
         </div>
@@ -58,22 +55,34 @@ export function Hero() {
             mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <button className="group flex items-center gap-2 px-8 py-3.5 bg-[#e1e1e6] text-[#121214] font-bold text-base rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:bg-white hover:shadow-lg hover:scale-105 transition-all duration-300">
+          <a
+            href="/Damaso-Magno-Desenvolvedor-Full-Stack.pdf"
+            download="Damaso Magno - Desenvolvedor Full Stack.pdf"
+            className="group flex items-center gap-2 px-8 py-3.5 bg-[#e1e1e6] text-[#121214] font-bold text-base rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:bg-white hover:shadow-lg hover:scale-105 transition-all duration-300"
+          >
             <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform duration-300" />
             Baixar CV
-          </button>
+          </a>
 
           <div className="flex items-center gap-4">
             {[
-              { icon: Github, href: "https://github.com/DamasoMagno" },
+              {
+                icon: Github,
+                href: "https://github.com/DamasoMagno",
+                label: "GitHub de Damaso Magno",
+              },
               {
                 icon: Linkedin,
                 href: "https://www.linkedin.com/in/damasomagno/",
+                label: "LinkedIn de Damaso Magno",
               },
-            ].map((social, index) => (
+            ].map((social) => (
               <a
-                key={index}
+                key={social.href}
                 href={social.href}
+                aria-label={social.label}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group w-11 h-11 rounded-full bg-[#202024] border border-white/[0.05] flex items-center justify-center hover:bg-white/[0.05] hover:border-white/10 hover:scale-110 hover:shadow-lg transition-all duration-300"
               >
                 <social.icon className="w-5 h-5 text-[#a8a8b3] group-hover:text-white transition-colors duration-300" />

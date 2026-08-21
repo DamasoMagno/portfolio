@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export function Footer() {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
     setVisible(true);
@@ -17,7 +17,7 @@ export function Footer() {
     >
       <div className="max-w-[1280px] mx-auto flex flex-col md:flex-row items-center justify-center gap-4">
         <p className="text-sm text-[#a8a8b3]">
-          © 2025 DM. Todos os direitos reservados.
+          © 2026 DM. Todos os direitos reservados.
         </p>
       </div>
     </footer>
