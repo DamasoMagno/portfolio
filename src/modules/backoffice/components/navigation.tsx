@@ -5,6 +5,7 @@ import { Briefcase, FolderKanban, LayoutDashboard, Mail, UserRound, Wrench, Book
 export const sections = [
   { slug: "", label: "Visão geral", icon: LayoutDashboard }, { slug: "analytics", label: "Analytics", icon: BarChart3, Handshake, FileText },
   { slug: "posts", label: "Posts", icon: FileText },
+  { slug: "vagas", label: "Vagas", icon: Briefcase },
   { slug: "servicos", label: "Serviços", icon: Handshake },
   { slug: "perfil", label: "Perfil", icon: UserRound },
   { slug: "projetos", label: "Projetos", icon: FolderKanban }, { slug: "habilidades", label: "Habilidades", icon: Wrench },

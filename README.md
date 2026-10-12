@@ -30,7 +30,7 @@ ANALYTICS_ENABLED=true
 
 A chave secreta fica somente no servidor, sem prefixo `NEXT_PUBLIC`. `SUPABASE_SERVICE_ROLE_KEY` aceita a chave legada service_role como alternativa. A URL também pode vir de `NEXT_PUBLIC_SUPABASE_URL`; a chave pública não dá acesso aos dados privados do backoffice. O login do proprietário continua independente do Supabase Auth.
 
-Execute [a migração SQL](supabase/migrations/202610120001_portfolio.sql) no SQL Editor do Supabase. Ela é idempotente e cria:
+Execute as migrações de [supabase/migrations](supabase/migrations) em ordem no SQL Editor, ou use `npm run supabase:setup` para aplicar todas. São idempotentes. A migração inicial cria:
 
 - `portfolio_documents`: documentos JSONB de conteúdo e posts, com revisão para impedir sobrescritas entre requisições/instâncias.
 - `portfolio_analytics_events`: eventos individuais, identificador único, data do servidor e retenção.
@@ -117,6 +117,7 @@ APIs administrativas, todas protegidas:
 - `/api/backoffice/posts`: artigos e configuração do blog.
 - `/api/backoffice/analytics`: relatórios.
 - `/api/backoffice/session`: login e logout do proprietário.
+- `/api/backoffice/jobs`: vagas e análise ATS, somente para o proprietário.
 - `POST /api/backoffice/images`: upload multipart autenticado.
 
 ## Autenticação e analytics
@@ -156,3 +157,15 @@ Configure `S3_ENDPOINT`, `S3_REGION`, `S3_BUCKET`, `S3_ACCESS_KEY_ID`, `S3_SECRE
 `npm run s3:check` verifica acesso ao bucket sem enviar arquivos. Os campos de foto e capa mantêm a opção de URL manual e oferecem envio de JPEG, PNG, WebP ou AVIF de até 4 MB, sem animação. O backend limita o corpo mesmo sem Content-Length, valida o conteúdo, remove metadados e converte para WebP. Redimensiona até 1200 px no perfil e 2400 px nas capas, mantendo a proporção. Os objetos recebem identificadores aleatórios e URLs estáveis; salvar o formulário aplica a imagem ao conteúdo. Uploads não associados e imagens substituídas permanecem no bucket até remoção pelo administrador. O currículo continua como arquivo/URL.
 
 Em produção, configure Supabase e S3 no ambiente do servidor, as três variáveis de autenticação e o domínio HTTPS. A migração e a importação inicial devem existir antes do deploy; não repita a importação após editar no banco. A hospedagem precisa permitir requisições multipart acima de 4 MB e runtime Node, sem exportação estática.
+
+## Vagas privadas e análise ATS
+
+`/backoffice/vagas` cadastra empresa, cargo, link, localização, modelo de trabalho, etapa da candidatura, senioridade, contrato, faixa salarial, idiomas, prazo, contato, descrição, responsabilidades, benefícios, requisitos obrigatórios/desejáveis, observações e texto opcional do currículo. Não há seção pública, link no portfólio, rota pública nem entrada no sitemap.
+
+O módulo `src/modules/jobs` segue API Route → serviço → contrato `JobsRepository` → Supabase/local. A migração `supabase/migrations/202610120002_jobs.sql` cria `portfolio_jobs` e a RPC de revisão atômica. RLS e grants permitem acesso somente pelo servidor. `supabase:setup` aplica todas as migrações em ordem. Desenvolvimento local pode usar `PORTFOLIO_JOBS_FILE`; produção usa Supabase.
+
+A análise `ats-keywords-v1` funciona sem IA, sem chaves externas e sem envio de dados a terceiros. Considera perfil, habilidades, experiências, projetos, serviços, recomendações e posts, incluindo rascunhos, além do currículo colado. Exclui mensagens de visitantes e analytics. Não lê automaticamente o PDF do perfil ou o link da vaga; cole a descrição e, se desejar, o texto do currículo.
+
+Normaliza acentos, reconhece aliases de tecnologias e usa limites de palavras (Java não corresponde a JavaScript). Extrai termos técnicos conhecidos e palavras relevantes da descrição/requisitos. Cada termo é contado uma vez; obrigatórios têm peso 2, desejáveis/descrição peso 1. Serviços, materiais recomendados e posts são exibidos como contexto, mas não comprovam experiência na pontuação. Exigências de tempo, idioma, formação e alternativas recebem indicação de revisão manual. Cobertura textual não mede senioridade, fluência, tempo de experiência, qualidade do currículo ou probabilidade de aprovação e não reproduz algoritmos proprietários de ATS.
+
+Cada vaga guarda as últimas 10 análises, incluindo versões dos dados, evidências, sugestões, rascunho de currículo (TXT/Markdown) e mensagem de candidatura. O currículo prioriza experiências/projetos conforme os termos encontrados e usa fatos estruturados existentes; não inventa formação ou competências ausentes. Dados presentes somente no currículo colado devem ser mantidos manualmente na versão final. Edite o arquivo exportado antes de enviar. Nenhuma candidatura é enviada automaticamente.

@@ -1,5 +1,5 @@
 const { execFileSync } = require('node:child_process');
-const { readFileSync } = require('node:fs');
+const { readFileSync, readdirSync } = require('node:fs');
 const path = require('node:path');
 const { root } = require('./lib/load-typescript.cjs');
 require('@next/env').loadEnvConfig(root, true, { info() {}, error() {} });
@@ -8,7 +8,7 @@ try {
   const reference = url.hostname.split('.')[0];
   if (!/^[a-z0-9]+$/.test(reference) || !url.hostname.endsWith('.supabase.co') || !process.env.SUPABASE_DB_PASSWORD) throw new Error('Configure a URL do projeto e SUPABASE_DB_PASSWORD.');
   const env = { ...process.env, PGHOST: process.env.SUPABASE_DB_HOST || `db.${reference}.supabase.co`, PGUSER: process.env.SUPABASE_DB_USER || 'postgres', PGPORT: process.env.SUPABASE_DB_PORT || '5432', PGDATABASE: process.env.SUPABASE_DB_NAME || 'postgres', PGPASSWORD: process.env.SUPABASE_DB_PASSWORD, PGSSLMODE: 'require', PGCONNECT_TIMEOUT: '10' };
-  const sql = process.argv.includes('--check') ? 'select 1;' : readFileSync(path.join(root, 'supabase/migrations/202610120001_portfolio.sql'), 'utf8');
+  const sql = process.argv.includes('--check') ? 'select 1;' : readdirSync(path.join(root, 'supabase/migrations')).filter(name => name.endsWith('.sql')).sort().map(name => readFileSync(path.join(root, 'supabase/migrations', name), 'utf8')).join('\n');
   execFileSync('psql', ['-v', 'ON_ERROR_STOP=1'], { env, input: sql, stdio: ['pipe', 'pipe', 'pipe'], timeout: 60000 });
   console.log(process.argv.includes('--check') ? 'Conexão PostgreSQL do Supabase validada.' : 'Migração aplicada no Supabase.');
 } catch (error) {

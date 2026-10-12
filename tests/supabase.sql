@@ -43,3 +43,25 @@ begin
   if (select count(*) from public.portfolio_documents) <> 2 then raise exception 'Import failed'; end if;
 end;
 $$;
+
+-- Vagas and resume analyses stay private; concurrent revisions must not overwrite.
+do $$ begin
+  if has_table_privilege('anon', 'public.portfolio_jobs', 'SELECT') or has_table_privilege('authenticated', 'public.portfolio_jobs', 'SELECT') then raise exception 'Private jobs exposed'; end if;
+  if has_function_privilege('anon', 'public.portfolio_save_jobs(bigint,jsonb)', 'EXECUTE') or has_function_privilege('authenticated', 'public.portfolio_save_jobs(bigint,jsonb)', 'EXECUTE') then raise exception 'Public job writes exposed'; end if;
+  if not (select relrowsecurity from pg_class where oid = 'public.portfolio_jobs'::regclass) then raise exception 'Jobs RLS missing'; end if;
+end $$;
+set role service_role;
+do $$ begin
+  if not public.portfolio_save_jobs(0, '{"version":1,"revision":1,"jobs":[]}') then raise exception 'Initial jobs insert failed'; end if;
+  if public.portfolio_save_jobs(0, '{"version":1,"revision":1,"jobs":[]}') then raise exception 'Duplicate jobs insert overwrote'; end if;
+  if not public.portfolio_save_jobs(1, '{"version":1,"revision":2,"jobs":[]}') then raise exception 'Jobs update failed'; end if;
+  if public.portfolio_save_jobs(1, '{"version":1,"revision":2,"jobs":[]}') then raise exception 'Stale jobs revision accepted'; end if;
+  if (select revision from public.portfolio_jobs) <> 2 then raise exception 'Jobs revision wrong'; end if;
+end $$;
+reset role;
+set role anon;
+do $$ begin
+  begin perform body from public.portfolio_jobs; raise exception 'Anonymous job read allowed'; exception when insufficient_privilege then null; end;
+  begin perform public.portfolio_save_jobs(2, '{"version":1,"revision":3,"jobs":[]}'); raise exception 'Anonymous job write allowed'; exception when insufficient_privilege then null; end;
+end $$;
+reset role;
