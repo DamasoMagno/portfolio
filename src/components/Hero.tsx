@@ -1,96 +1,27 @@
-"use client";
+import { ArrowDown, Download, Github, Linkedin } from "lucide-react";
+import { PortfolioContainer } from "@/components/ui/PortfolioContainer";
+import type { Profile } from "@/modules/content/schemas/content";
 
-import { Download, Github, Linkedin } from "lucide-react";
-import { useEffect, useState } from "react";
-
-export function Hero() {
-  const [mounted, setMounted] = useState(true);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+export function Hero({ profile }: { profile: Profile }) {
   return (
-    <section className="min-h-[calc(100vh-100px)] flex flex-col items-center justify-center px-6 pt-20 pb-10">
-      <div className="flex flex-col items-center gap-8 max-w-[576px] mx-auto">
-        <div
-          className={`relative transition-all duration-700 ${
-            mounted ? "opacity-100 scale-100" : "opacity-0 scale-90"
-          }`}
-        >
-          <div className="absolute inset-0 bg-[#8257e6]/20 rounded-[2rem] blur-2xl scale-90" />
-          <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-[2rem] overflow-hidden border-2 border-white/[0.1] shadow-2xl bg-[#202024] z-10 hover:scale-105 transition-transform duration-500">
-            <img
-              src="/avatar.jpg"
-              alt="Damaso Magno"
-              className="w-full h-full object-cover"
-            />
+    <section className="px-6 pb-14 pt-28 sm:pt-32 sm:pb-16">
+      <PortfolioContainer className="grid items-center gap-6 md:grid-cols-[minmax(0,1fr)_240px] md:gap-16">
+        <div className="min-w-0">
+          <p className="mb-3 text-sm text-text-secondary">{profile.headline}</p>
+          <h1 className="break-words text-4xl font-bold leading-[1.1] tracking-tight text-text-primary sm:text-6xl lg:text-7xl">{profile.name}</h1>
+          <p className="mt-5 max-w-xl text-base leading-7 text-text-secondary sm:text-lg">{profile.intro}</p>
+          <div className="mt-7 flex flex-wrap items-center gap-3">
+            <a href="#projects" className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-medium text-white transition-colors hover:bg-[#9469f5]">Ver projetos<ArrowDown size={16} /></a>
+            <a href={profile.resume} download={`${profile.name} - CV.pdf`} className="inline-flex items-center gap-2 rounded-lg border border-white/10 px-5 py-3 text-sm text-text-primary transition-colors hover:bg-white/5"><Download size={16} />Baixar CV</a>
+            <div className="flex items-center gap-1">
+              {[{ icon: Github, href: profile.github, label: `GitHub de ${profile.name}` }, { icon: Linkedin, href: profile.linkedin, label: `LinkedIn de ${profile.name}` }].filter(social => social.href).map(social => <a key={social.label} href={social.href} aria-label={social.label} title={social.label} target="_blank" rel="noopener noreferrer" className="rounded-lg p-3 text-text-secondary transition-colors hover:bg-white/5 hover:text-white"><social.icon size={20} /></a>)}
+            </div>
           </div>
         </div>
-
-        <div
-          className={`flex flex-col items-center gap-3 transition-all duration-700 delay-200 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
-          <span className="px-4 py-1.5 text-[12px] font-bold tracking-[1.2px] text-[#8257e6] bg-[#8257e6]/10 rounded-full border border-[#8257e6]/20">
-            FULL STACK DEVELOPER
-          </span>
-          <h1 className="text-[72px] font-bold text-[#e1e1e6] tracking-tight leading-none text-center">
-            Damaso Magno
-          </h1>
+        <div className="row-start-1 md:col-start-2 md:row-start-1 md:justify-self-end">
+          <img src={profile.avatar} alt={profile.name} width={224} height={224} className="h-24 w-24 rounded-full border border-white/10 object-cover sm:h-40 sm:w-40 md:h-56 md:w-56" />
         </div>
-
-        <p
-          className={`text-xl text-[#a8a8b3] text-center leading-[1.625] max-w-[500px] transition-all duration-700 delay-300 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
-          Transformando ideias complexas em soluções digitais completas, do
-          frontend ao backend.
-        </p>
-
-        <div
-          className={`flex items-center gap-4 pt-4 transition-all duration-700 delay-500 ${
-            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          }`}
-        >
-          <a
-            href="/Damaso-Magno-Desenvolvedor-Full-Stack.pdf"
-            download="Damaso Magno - Desenvolvedor Full Stack.pdf"
-            className="group flex items-center gap-2 px-8 py-3.5 bg-[#e1e1e6] text-[#121214] font-bold text-base rounded-xl shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:bg-white hover:shadow-lg hover:scale-105 transition-all duration-300"
-          >
-            <Download className="w-5 h-5 group-hover:translate-y-0.5 transition-transform duration-300" />
-            Baixar CV
-          </a>
-
-          <div className="flex items-center gap-4">
-            {[
-              {
-                icon: Github,
-                href: "https://github.com/DamasoMagno",
-                label: "GitHub de Damaso Magno",
-              },
-              {
-                icon: Linkedin,
-                href: "https://www.linkedin.com/in/damasomagno/",
-                label: "LinkedIn de Damaso Magno",
-              },
-            ].map((social) => (
-              <a
-                key={social.href}
-                href={social.href}
-                aria-label={social.label}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group w-11 h-11 rounded-full bg-[#202024] border border-white/[0.05] flex items-center justify-center hover:bg-white/[0.05] hover:border-white/10 hover:scale-110 hover:shadow-lg transition-all duration-300"
-              >
-                <social.icon className="w-5 h-5 text-[#a8a8b3] group-hover:text-white transition-colors duration-300" />
-              </a>
-            ))}
-          </div>
-        </div>
-      </div>
+      </PortfolioContainer>
     </section>
   );
 }

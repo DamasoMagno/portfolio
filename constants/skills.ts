@@ -1,4 +1,4 @@
-const skillCategories: { title: string; tags: string[] }[] = [
+export const skillCategories = [
   {
     title: "Frontend",
     tags: [
@@ -24,9 +24,7 @@ const skillCategories: { title: string; tags: string[] }[] = [
     tags: [
       "React Native",
       "Expo",
-      "Android Studio",
       "Async Storage",
-      "Push Notifications",
       "React Navigation",
       "Play Store",
       "App Store",
@@ -38,17 +36,20 @@ const skillCategories: { title: string; tags: string[] }[] = [
       "Node.js",
       "Express",
       "Fastify",
+      "NestJS",
+      "Prisma",
+      "Drizzle",
+      "Jest",
       "Java",
       "Spring Boot",
-      "Jest",
       "JPA",
       "Hibernate",
       "Scalar",
       "Swagger",
       "JWT",
-      "Prisma",
       "SOLID",
-      "TDD",
+      "Redis",
+      "Clean Code"
     ],
   },
   {
@@ -59,6 +60,7 @@ const skillCategories: { title: string; tags: string[] }[] = [
     title: "DevOps & Ferramentas",
     tags: [
       "Git",
+      "GitHub",
       "Docker",
       "Figma",
       "Vercel",

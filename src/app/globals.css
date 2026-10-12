@@ -1,13 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+@layer base {
+  * { box-sizing: border-box; padding: 0; margin: 0; }
+  *, ::before, ::after { border-color: var(--color-gray-200, currentColor); }
+  button:not(:disabled), [role="button"]:not(:disabled) { cursor: pointer; }
 }
 
 html {
@@ -28,9 +27,8 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+@layer base {
+  a { color: inherit; text-decoration: none; }
 }
 
 ::selection {
@@ -160,3 +158,47 @@ a {
 .stagger-4 { animation-delay: 0.4s; }
 .stagger-5 { animation-delay: 0.5s; }
 .stagger-6 { animation-delay: 0.6s; }
+
+/* Expand navigation labels only on desktop devices with a precise pointer. */
+.portfolio-nav-label {
+  display: none;
+}
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) {
+  header .portfolio-nav-link {
+    width: auto;
+    padding-inline: 10px;
+  }
+
+  .portfolio-nav-label {
+    display: block;
+    max-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    margin-left: 0;
+    opacity: 0;
+    font-size: 12px;
+    font-weight: 500;
+    color: #e1e1e6;
+    transition: max-width 250ms ease, margin-left 250ms ease, opacity 200ms ease;
+  }
+
+  .portfolio-nav-label > span {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .portfolio-nav-link:hover .portfolio-nav-label,
+  .portfolio-nav-link:focus-visible .portfolio-nav-label {
+    max-width: 160px;
+    margin-left: 8px;
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-nav-label {
+    transition: none;
+  }
+}

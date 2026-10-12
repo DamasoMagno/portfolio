@@ -1,216 +1,24 @@
 "use client";
-
-import { Mail, MessageCircle, Send } from "lucide-react";
-import { FormEvent, useEffect, useRef, useState } from "react";
-
-export function Contact() {
-  const [visible, setVisible] = useState(true);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [submitState, setSubmitState] = useState<
-    "idle" | "loading" | "success" | "error"
-  >("idle");
-  const [submitMessage, setSubmitMessage] = useState("");
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSubmitState("loading");
-    setSubmitMessage("");
-
+import { ArrowUpRight } from "lucide-react";
+import { useState, type FormEvent } from "react";
+import { PortfolioContainer } from "./ui/PortfolioContainer";
+import { Input } from "./ui/Input";
+import { projectTypes } from "@/modules/messages/schemas/contact";
+import { analyticsContext } from "@/modules/analytics/services/browser";
+import type { Profile } from "@/modules/content/schemas/content";
+export function Contact({ profile }: { profile: Profile }) {
+  const [name, setName] = useState(""); const [email, setEmail] = useState(""); const [message, setMessage] = useState("");
+  const [projectType, setProjectType] = useState<keyof typeof projectTypes>("outro");
+  const [state, setState] = useState<"idle" | "loading" | "success" | "error">("idle"); const [feedback, setFeedback] = useState("");
+  async function submit(event: FormEvent) {
+    event.preventDefault(); if (state === "loading") return;
+    setState("loading"); setFeedback("");
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message }),
-      });
-      const data = (await res.json().catch(() => ({}))) as {
-        error?: string;
-        hint?: string;
-        missingEnv?: string[];
-      };
-
-      if (!res.ok) {
-        setSubmitState("error");
-        const parts = [
-          data.error ?? "Não foi possível enviar. Tente novamente.",
-          data.missingEnv?.length
-            ? `Faltando: ${data.missingEnv.join(", ")}.`
-            : null,
-          data.hint ?? null,
-        ].filter(Boolean);
-        setSubmitMessage(parts.join(" "));
-        return;
-      }
-
-      setSubmitState("success");
-      setSubmitMessage("Mensagem enviada. Obrigado pelo contato!");
-      setName("");
-      setEmail("");
-      setMessage("");
-    } catch {
-      setSubmitState("error");
-      setSubmitMessage("Erro de rede. Verifique sua conexão.");
-    }
+      const response = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, email, message, projectType, analytics: analyticsContext() }) });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error ?? "Não foi possível enviar. Tente novamente.");
+      setState("success"); setFeedback(data.message ?? "Mensagem enviada. Obrigado pelo contato!"); setName(""); setEmail(""); setMessage(""); setProjectType("outro");
+    } catch (error) { setState("error"); setFeedback(error instanceof Error ? error.message : "Não foi possível enviar. Tente novamente."); }
   }
-
-  return (
-    <section id="contact" ref={ref} className="py-20 px-6 border-t border-white/[0.05]">
-      <div className="max-w-[1152px] mx-auto">
-        <div className="flex flex-col lg:flex-row items-start justify-center gap-24">
-          <div
-            className={`flex flex-col gap-10 max-w-[528px] transition-all duration-700 ${
-              visible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-8"
-            }`}
-          >
-            <div className="flex flex-col gap-3">
-              <span className="text-sm font-bold tracking-[0.7px] text-[#8257e6] uppercase">
-                Contato
-              </span>
-              <h2 className="text-[36px] font-bold text-[#e1e1e6] leading-[1.11]">
-                Vamos conversar?
-              </h2>
-              <p className="text-lg text-[#a8a8b3] leading-[1.625]">
-                Tem uma ideia de projeto ou quer apenas trocar uma ideia?
-                Estou disponível para novos desafios. Entre em contato pelos
-                canais abaixo ou preencha o formulário.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-4">
-              <a
-                href="mailto:damaso.magn@gmail.com"
-                className="group flex items-center gap-4 p-4 rounded-xl bg-[#18181b] border border-white/[0.05] shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:bg-white/[0.02] hover:border-white/10 transition-all duration-300"
-              >
-                <div className="w-12 h-12 rounded-lg bg-[#8257e6]/20 flex items-center justify-center">
-                  <Mail className="w-6 h-6 text-[#8257e6]" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-[#a8a8b3]">E-mail</span>
-                  <span className="text-base font-medium text-[#e1e1e6] group-hover:text-[#8257e6] transition-colors duration-300">
-                    damaso.magn@gmail.com
-                  </span>
-                </div>
-              </a>
-
-              <a
-                href="#"
-                className="group flex items-center gap-4 p-4 rounded-xl bg-[#18181b] border border-white/[0.05] shadow-[0_1px_4px_rgba(0,0,0,0.05)] hover:bg-white/[0.02] hover:border-white/10 transition-all duration-300"
-              >
-                <div className="w-12 h-12 rounded-lg bg-[#8257e6]/20 flex items-center justify-center">
-                  <MessageCircle className="w-6 h-6 text-[#8257e6]" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-medium text-[#a8a8b3]">WhatsApp</span>
-                  <span className="text-base font-medium text-[#e1e1e6] group-hover:text-[#8257e6] transition-colors duration-300">
-                    +55 (88) 99601-8788
-                  </span>
-                </div>
-              </a>
-            </div>
-          </div>
-
-          <form
-            onSubmit={handleSubmit}
-            className={`flex flex-col gap-5 w-full max-w-[528px] transition-all duration-700 delay-200 ${
-              visible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"
-            }`}
-          >
-            <div className="flex flex-col gap-2">
-              <label htmlFor="contact-name" className="text-sm font-medium text-[#a8a8b3]">
-                Nome
-              </label>
-              <input
-                id="contact-name"
-                type="text"
-                name="name"
-                required
-                maxLength={200}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                disabled={submitState === "loading"}
-                placeholder="Seu nome"
-                className="px-4 py-3.5 rounded-lg bg-[#202024] border border-white/[0.05] text-[#e1e1e6] placeholder:text-[#6b7280] focus:outline-none focus:border-[#8257e6] focus:ring-1 focus:ring-[#8257e6]/30 transition-all duration-300 disabled:opacity-60"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label htmlFor="contact-email" className="text-sm font-medium text-[#a8a8b3]">
-                E-mail
-              </label>
-              <input
-                id="contact-email"
-                type="email"
-                name="email"
-                required
-                maxLength={320}
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                disabled={submitState === "loading"}
-                placeholder="seu@email.com"
-                className="px-4 py-3.5 rounded-lg bg-[#202024] border border-white/[0.05] text-[#e1e1e6] placeholder:text-[#6b7280] focus:outline-none focus:border-[#8257e6] focus:ring-1 focus:ring-[#8257e6]/30 transition-all duration-300 disabled:opacity-60"
-              />
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <label htmlFor="contact-message" className="text-sm font-medium text-[#a8a8b3]">
-                Mensagem
-              </label>
-              <textarea
-                id="contact-message"
-                name="message"
-                required
-                maxLength={8000}
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                disabled={submitState === "loading"}
-                placeholder="Escreva sua mensagem aqui..."
-                rows={5}
-                className="px-4 py-3.5 rounded-lg bg-[#202024] border border-white/[0.05] text-[#e1e1e6] placeholder:text-[#6b7280] focus:outline-none focus:border-[#8257e6] focus:ring-1 focus:ring-[#8257e6]/30 transition-all duration-300 resize-none disabled:opacity-60"
-              />
-            </div>
-
-            {submitMessage ? (
-              <p
-                className={`text-sm ${
-                  submitState === "success" ? "text-emerald-400" : "text-red-400"
-                }`}
-                role="status"
-              >
-                {submitMessage}
-              </p>
-            ) : null}
-
-            <button
-              type="submit"
-              disabled={submitState === "loading"}
-              className="group flex items-center justify-center gap-2 w-full py-4 bg-[#8257e6] text-white font-bold text-base rounded-lg hover:bg-[#6d46c9] hover:shadow-[0_4px_12px_rgba(130,87,230,0.4)] active:scale-[0.98] transition-all duration-300 disabled:opacity-60 disabled:pointer-events-none"
-            >
-              {submitState === "loading" ? "Enviando…" : "Enviar Mensagem"}
-              <Send className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-  );
+  return <section id="contact" className="scroll-mt-28 border-t border-white/[0.05] px-6 py-16"><PortfolioContainer><div className="grid gap-10 lg:grid-cols-2 lg:gap-20"><div><h2 className="text-3xl font-bold tracking-tight">Tem um projeto em mente?</h2><p className="mt-4 max-w-md text-sm leading-7 text-text-secondary">Me conte o que você precisa desenvolver. Podemos conversar sobre o escopo e a melhor forma de trabalhar juntos.</p><div className="mt-7 space-y-4"><a href={`mailto:${profile.email}`} className="flex w-fit max-w-full items-center gap-2 break-all text-sm text-text-secondary hover:text-white">{profile.email}<ArrowUpRight size={14} className="shrink-0" /></a><a href={`https://wa.me/${profile.whatsapp}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm text-primary hover:text-white">Conversar pelo WhatsApp<ArrowUpRight size={14} /></a></div></div><form onSubmit={submit} className="space-y-5"><div className="grid gap-5 sm:grid-cols-2"><div><label htmlFor="contact-name" className="mb-2 block text-xs text-text-secondary">Nome</label><Input id="contact-name" autoComplete="name" required maxLength={200} value={name} onChange={event => setName(event.target.value)} disabled={state === "loading"} /></div><div><label htmlFor="contact-email" className="mb-2 block text-xs text-text-secondary">E-mail</label><Input id="contact-email" type="email" autoComplete="email" required maxLength={320} value={email} onChange={event => setEmail(event.target.value)} disabled={state === "loading"} /></div></div><div><label htmlFor="contact-type" className="mb-2 block text-xs text-text-secondary">Tipo de projeto</label><select id="contact-type" value={projectType} onChange={event => setProjectType(event.target.value as keyof typeof projectTypes)} disabled={state === "loading"} className="w-full rounded-lg border border-white/10 bg-background px-3 py-2.5 text-sm outline-none focus:border-primary">{Object.entries(projectTypes).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></div><div><label htmlFor="contact-message" className="mb-2 block text-xs text-text-secondary">O que você precisa?</label><textarea id="contact-message" required maxLength={8000} rows={5} value={message} onChange={event => setMessage(event.target.value)} disabled={state === "loading"} placeholder="Descreva a ideia, o problema que quer resolver e, se tiver, um prazo." className="w-full resize-y rounded-lg border border-white/10 bg-background p-3 text-sm leading-6 outline-none focus:border-primary" /></div>{feedback && <p role={state === "error" ? "alert" : "status"} className={`text-sm ${state === "error" ? "text-red-300" : "text-emerald-300"}`}>{feedback}</p>}<button disabled={state === "loading"} className="rounded-lg bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-[#9469f5] disabled:opacity-50">{state === "loading" ? "Enviando…" : "Enviar mensagem"}</button></form></div></PortfolioContainer></section>;
 }

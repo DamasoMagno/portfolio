@@ -1,0 +1,7 @@
+import { ArrowUpRight } from "lucide-react";
+import { PortfolioContainer } from "@/components/ui/PortfolioContainer";
+import type { Service } from "../schemas/service";
+export function ServicesSection({ services }: { services: Service[] }) {
+  if (!services.length) return null;
+  return <section id="services" className="scroll-mt-28 border-t border-white/[0.05] px-6 py-16"><PortfolioContainer><div className="mb-8 flex flex-wrap items-end justify-between gap-5"><div><h2 className="text-3xl font-bold tracking-tight">Serviços freelance</h2><p className="mt-3 text-sm text-text-secondary">Desenvolvimento web, mobile e integrações para o seu projeto.</p></div><a href="#contact" className="inline-flex items-center gap-2 text-sm text-primary hover:text-white">Conversar sobre um projeto<ArrowUpRight size={15} /></a></div><div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">{services.map((service, index) => <article key={index} className="border-t border-white/10 pt-6"><h3 className="text-lg font-medium">{service.title}</h3><p className="mt-3 text-sm leading-7 text-text-secondary">{service.description}</p><ul className="mt-4 space-y-2">{service.deliverables.map((item, index) => <li key={`${item}-${index}`} className="text-xs leading-5 text-text-secondary">{item}</li>)}</ul><a href="#contact" className="mt-6 inline-flex items-center gap-1.5 text-xs text-primary hover:text-white">Falar sobre este serviço<ArrowUpRight size={14} /></a></article>)}</div></PortfolioContainer></section>;
+}

@@ -5,7 +5,12 @@ export type ProjectWorkType =
   | "estagio";
 
 export interface Project {
+  id?: string;
   title: string;
+  cover?: string;
+  context?: string;
+  contribution?: string;
+  outcome?: string;
   category: string[];
   /** Contexto do trabalho: freelance, CLT, projeto próprio, estágio etc. */
   workType: ProjectWorkType;

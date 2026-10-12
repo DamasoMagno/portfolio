@@ -3,10 +3,11 @@ import { Project } from "@/interfaces/project";
 export const projects: Project[] = [
   {
     title: "Activer",
+    cover: "/project-previews/activer.png",
     category: ["Frontend"],
     workType: "projeto_pessoal",
     description:
-      "Plataforma de gestão de atividades físicas com dashboard completo.",
+      "Aplicação para organizar tarefas e eventos.",
     tags: ["React", "Next.js", "Tailwind"],
     links: {
       github: "https://github.com/DamasoMagno/activer",
@@ -15,6 +16,7 @@ export const projects: Project[] = [
   },
   {
     title: "Organage",
+    cover: "/project-previews/organage.png",
     category: ["Frontend"],
     workType: "projeto_pessoal",
     description:
@@ -38,6 +40,7 @@ export const projects: Project[] = [
   },
   {
     title: "PoteCake",
+    cover: "/project-previews/potecake.png",
     category: ["Frontend"],
     workType: "freelance",
     description: "Plataforma de delivery focada em uma confeitaria regional.",
@@ -69,6 +72,7 @@ export const projects: Project[] = [
   },
   {
     title: "MeCart",
+    cover: "/project-previews/mecart.png",
     category: ["Frontend"],
     workType: "projeto_pessoal",
     description:
@@ -89,9 +93,10 @@ export const projects: Project[] = [
   },
   {
     title: "Estoquer",
+    cover: "/project-previews/estoquer.png",
     category: ["Frontend"],
     workType: "projeto_pessoal",
-    description: "Estoquer",
+    description: "Aplicação web com Next.js e Supabase.",
     tags: ["Next.js", "Supabase"],
     links: {
       github: "https://github.com/DamasoMagno/estoquer-front",
@@ -100,6 +105,7 @@ export const projects: Project[] = [
   },
   {
     title: "BridClub",
+    cover: "/project-previews/bridclub.png",
     category: ["Full Stack"],
     workType: "emprego",
     description:

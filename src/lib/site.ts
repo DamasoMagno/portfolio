@@ -38,19 +38,19 @@ export function getSiteUrl(): string {
   return "http://localhost:3000";
 }
 
-export function personJsonLd(siteUrl: string) {
+export function personJsonLd(siteUrl: string, profile?: import("@/modules/content/schemas/content").Profile) {
   return {
     "@context": "https://schema.org",
     "@graph": [
       {
         "@type": "Person",
         "@id": `${siteUrl}/#person`,
-        name: SITE_NAME,
+        name: profile?.name ?? SITE_NAME,
         url: siteUrl,
-        image: `${siteUrl}/avatar.jpg`,
-        jobTitle: "Desenvolvedor Full Stack",
-        description: SITE_DESCRIPTION,
-        sameAs: [SOCIAL.github, SOCIAL.linkedin],
+        image: profile ? new URL(profile.avatar, siteUrl).toString() : `${siteUrl}/avatar.jpg`,
+        jobTitle: profile?.headline ?? "Desenvolvedor Full Stack",
+        description: profile?.intro ?? SITE_DESCRIPTION,
+        sameAs: profile ? [profile.github, profile.linkedin].filter(Boolean) : [SOCIAL.github, SOCIAL.linkedin],
         knowsAbout: [
           "React",
           "Next.js",
@@ -70,8 +70,8 @@ export function personJsonLd(siteUrl: string) {
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
-        name: SITE_TITLE,
-        description: SITE_DESCRIPTION,
+        name: profile ? `${profile.name} | ${profile.headline}` : SITE_TITLE,
+        description: profile?.intro ?? SITE_DESCRIPTION,
         inLanguage: "pt-BR",
         publisher: { "@id": `${siteUrl}/#person` },
       },

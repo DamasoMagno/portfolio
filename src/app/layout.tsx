@@ -1,3 +1,4 @@
+import { publicContent } from "@/modules/content/services/content";
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
@@ -11,8 +12,9 @@ import {
 } from "@/lib/site";
 
 const siteUrl = getSiteUrl();
+export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
+const baseMetadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: SITE_TITLE,
@@ -55,12 +57,23 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const { profile } = await publicContent();
+  const title = `${profile.name} | ${profile.headline}`;
+  return { ...baseMetadata, title: { default: title, template: `%s | ${profile.name}` }, description: profile.intro,
+    authors: [{ name: profile.name, url: siteUrl }], creator: profile.name,
+    openGraph: { ...baseMetadata.openGraph, title, description: profile.intro, siteName: profile.name },
+    twitter: { ...baseMetadata.twitter, title, description: profile.intro },
+  };
+}
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = personJsonLd(siteUrl);
+  const { profile } = await publicContent();
+  const jsonLd = personJsonLd(siteUrl, profile);
 
   return (
     <html lang="pt-BR">
@@ -69,7 +82,7 @@ export default function RootLayout({
         <Script
           id="person-jsonld"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}
         />
       </body>
     </html>
