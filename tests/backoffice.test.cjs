@@ -270,3 +270,12 @@ test('formulário mantém o tipo de projeto e conta conversão somente depois de
   assert.equal((await send({ ...body, email: 'invalid' })).status, 400); assert.equal(conversions.length, 1);
   fail = true; assert.equal((await send(body)).status, 503); assert.equal(conversions.length, 1);
 });
+
+test('esconder e mostrar uma stack mantém suas tecnologias e altera a publicação pública', async () => isolated(async () => {
+  let document = await repository.readContent(); const skill = document.skills[0];
+  document = await services.updateCollection('skills', { action: 'save', id: skill.id, data: { ...skill, published: false }, revision: document.revision });
+  assert.equal((await services.publicContent()).skills.some(item => item.id === skill.id), false);
+  assert.deepEqual(document.skills.find(item => item.id === skill.id).tags, skill.tags);
+  document = await services.updateCollection('skills', { action: 'save', id: skill.id, data: { ...skill, published: true }, revision: document.revision });
+  assert.equal((await services.publicContent()).skills.some(item => item.id === skill.id), true);
+}));

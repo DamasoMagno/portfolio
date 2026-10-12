@@ -131,3 +131,21 @@ test('adaptador Supabase de vagas valida revisões e retorna conflito sem altera
     await assert.rejects(repository.mutate(0, () => {}), /outra janela/); assert.equal(body.revision, 1);
   } finally { global.fetch = original; for (const key of Object.keys(process.env)) if (!(key in previous)) delete process.env[key]; Object.assign(process.env, previous); }
 });
+
+test('análise com IA preserva ATS e rejeita alterações concorrentes sem sobrescrever a vaga', async () => isolated(async () => {
+  const content = initialContent(); let delay, release;
+  const provider = { getJobAnalysisProvider: () => ({ analyze: async () => {
+    if (delay) await new Promise(resolve => { release = resolve; delay(); });
+    return { summary: 'Resumo', strengths: [], gaps: [], suggestions: [], sources: [], model: 'test-model', createdAt: new Date().toISOString(), truncated: false };
+  } }) };
+  const service = load('src/modules/jobs/services/jobs.ts', { './ai-analysis': provider, '@/modules/content/services/content': { getBackofficeContent: async () => content }, '@/modules/posts/services/posts': { getBackofficePosts: async () => posts } });
+  let document = await service.updateJobs({ action: 'save', revision: 0, data: job() }); const id = document.jobs[0].id;
+  document = await service.updateJobs({ action: 'analyze-ai', revision: 1, id });
+  assert.equal(document.jobs[0].analyses[0].score, analyzeJob(job(), content, posts).score);
+  assert.equal(document.jobs[0].analyses[0].ai.model, 'test-model');
+  const started = new Promise(resolve => { delay = resolve; });
+  const analysis = service.updateJobs({ action: 'analyze-ai', revision: document.revision, id }); await started;
+  document = await service.updateJobs({ action: 'save', revision: document.revision, id, data: job({ title: 'Alterado durante IA' }) });
+  release(); await assert.rejects(analysis, /outra janela/);
+  const current = await service.getBackofficeJobs(); assert.equal(current.jobs[0].data.title, 'Alterado durante IA'); assert.equal(current.jobs[0].analyses.length, 1);
+}));

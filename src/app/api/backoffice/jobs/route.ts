@@ -3,6 +3,8 @@ import { ZodError } from "zod";
 import { hasBackofficeAccess, sameOrigin } from "@/modules/backoffice/services/access";
 import { getBackofficeJobs, updateJobs } from "@/modules/jobs/services/jobs";
 import { JobsConflict } from "@/modules/jobs/repositories/errors";
+import { JobAIError } from "@/modules/jobs/services/ai-analysis";
+export const maxDuration = 60;
 export const runtime = "nodejs";
 export async function GET() {
   if (!(await hasBackofficeAccess())) return NextResponse.json({ error: "Acesso administrativo necessário." }, { status: 401 });
@@ -22,6 +24,7 @@ export async function POST(request: Request) {
     const result = await updateJobs(JSON.parse(Buffer.concat(chunks).toString("utf8")));
     return NextResponse.json({ data: result }, { headers: { "Cache-Control": "no-store" } });
   } catch (error) {
+    if (error instanceof JobAIError) return NextResponse.json({ error: error.message }, { status: 503 });
     if (error instanceof JobsConflict) return NextResponse.json({ error: error.message }, { status: 409 });
     if (error instanceof ZodError) return NextResponse.json({ error: error.issues[0]?.message ?? "Dados inválidos." }, { status: 400 });
     return NextResponse.json({ error: "Não foi possível salvar ou analisar a vaga. Atualize e tente novamente." }, { status: 503 });

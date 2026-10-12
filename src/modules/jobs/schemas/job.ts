@@ -16,11 +16,19 @@ export const jobInputSchema = z.object({
 export type JobInput = z.infer<typeof jobInputSchema>;
 export const evidenceSchema = z.object({ sourceId: z.string(), source: z.string(), excerpt: z.string().max(500), terms: z.array(z.string()) });
 export const requirementResultSchema = z.object({ requirement: z.string(), kind: z.enum(["required", "desirable", "description"]), terms: z.array(z.string()), matched: z.array(z.string()), missing: z.array(z.string()), status: z.enum(["found", "partial", "missing", "manual"]), evidence: z.array(evidenceSchema).max(6) });
+export const aiAdviceSchema = z.object({
+  summary: z.string().min(1).max(3000),
+  strengths: z.array(z.object({ text: z.string().min(1).max(1000), sourceIds: z.array(z.string().max(100)).min(1).max(6) }).strict()).max(10),
+  gaps: z.array(z.string().min(1).max(1000)).max(10),
+  suggestions: z.array(z.string().min(1).max(1000)).max(10),
+}).strict();
+export const aiAssessmentSchema = aiAdviceSchema.extend({ model: z.string().max(200), createdAt: z.string().datetime(), sources: z.array(z.object({ id: z.string(), label: z.string(), text: z.string().max(12000) })), truncated: z.boolean() });
 export const analysisSchema = z.object({
   id: z.string().uuid(), createdAt: z.string().datetime(), algorithmVersion: z.literal("ats-keywords-v1"),
   contentRevision: z.number().int().nonnegative(), postsRevision: z.number().int().nonnegative(), jobFingerprint: z.string(),
   score: z.number().int().min(0).max(100).nullable(), matchedKeywords: z.array(z.string()), missingKeywords: z.array(z.string()),
   requirements: z.array(requirementResultSchema).max(100), suggestions: z.array(z.string()).max(20),
+  ai: aiAssessmentSchema.optional(),
   resumeMarkdown: z.string().max(100000), coverLetter: z.string().max(10000),
   sources: z.object({ profile: z.number(), experiences: z.number(), projects: z.number(), skills: z.number(), services: z.number(), recommendations: z.number(), posts: z.number(), resume: z.number() }),
 });
@@ -32,6 +40,7 @@ export type JobsDocument = z.infer<typeof jobsDocumentSchema>;
 export const jobActionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("save"), revision: z.number().int().nonnegative(), id: z.string().uuid().optional(), data: jobInputSchema }).strict(),
   z.object({ action: z.literal("delete"), revision: z.number().int().nonnegative(), id: z.string().uuid() }).strict(),
+  z.object({ action: z.literal("analyze-ai"), revision: z.number().int().nonnegative(), id: z.string().uuid() }).strict(),
   z.object({ action: z.literal("analyze"), revision: z.number().int().nonnegative(), id: z.string().uuid() }).strict(),
 ]);
 export const emptyJobs = (): JobsDocument => ({ version: 1, revision: 0, jobs: [] });
