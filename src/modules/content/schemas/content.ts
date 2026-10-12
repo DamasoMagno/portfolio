@@ -24,7 +24,7 @@ export const skillSchema = z.object({ title: text(), tags: list.min(1, "Informe 
 export const experienceSchema = z.object({ role: text(), company: text(), period: text(), description: text(8000), tasks: list, tags: list, workType, ...publishing });
 export const recommendationSchema = z.object({ title: text(), description: text(8000), instructor: text(), href: webUrl.refine(Boolean, "Informe o link."), icon: z.enum(["code", "play", "book"]), ...publishing });
 export const profileSchema = z.object({
-  name: text(100), headline: text(), intro: text(2000), about: z.array(text(8000)).min(1).max(10),
+  name: text(100), headline: text(), intro: text(2000), about: z.array(z.string().max(80000).refine(value => Boolean(value.trim()), "Preencha o Sobre mim.")).min(1).max(10).refine(paragraphs => paragraphs.join("\n\n").length <= 80000, "O Sobre mim deve ter no máximo 80 mil caracteres."),
   avatar: mediaUrl, resume: mediaUrl, email: z.string().trim().email().max(320),
   whatsapp: z.string().trim().regex(/^\d{10,15}$/, "Informe o WhatsApp com DDI, somente números."),
   github: webUrl, linkedin: webUrl,

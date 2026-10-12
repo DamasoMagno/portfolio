@@ -36,6 +36,14 @@ async function isolated(run) {
 }
 const project = { title: 'Projeto de teste', description: 'Descrição', tags: ['React'], category: ['Frontend'], workType: 'projeto_pessoal', links: { github: '', demo: 'https://example.com' }, published: false };
 
+test('Sobre mim preserva quebras de linha e Markdown após salvar e ler o perfil', async () => isolated(async () => {
+  const content = await repository.readContent();
+  const about = ['**Desenvolvedor Full Stack**\nTrabalho com React.\n\n\n- Aplicações web\n- APIs\n\n[GitHub](https://github.com/DamasoMagno)'];
+  await services.updateProfile({ revision: content.revision, data: { ...content.profile, about } });
+  assert.deepEqual((await services.publicContent()).profile.about, about);
+  assert.equal(schemas.profileSchema.safeParse({ ...content.profile, about: [' \n '] }).success, false);
+}));
+
 test('valida URLs, campos obrigatórios e dados de perfil sem permitir scripts', () => {
   assert.equal(schemas.projectSchema.safeParse(project).success, true);
   assert.equal(schemas.projectSchema.safeParse({ ...project, links: { github: 'javascript:alert(1)', demo: '' } }).success, false);

@@ -76,6 +76,7 @@ Para desenvolver sem banco, defina explicitamente `PORTFOLIO_STORAGE=local`. Os 
 ## Recursos
 
 - Perfil, projetos, habilidades, experiências, serviços e recomendações: cadastro, rascunhos, ordenação e publicação.
+- Sobre mim: quebras de linha preservadas, formatação Markdown e prévia com o mesmo componente usado no portfólio.
 - Projetos: capturas reais, contexto/problema, participação e resultados opcionais, filtros e detalhes.
 - Posts: Markdown com prévia, slug único, tags, resumo, capa, rascunhos e agendamento.
 - Mensagens: nome, e-mail, tipo de projeto e breve descrição; pesquisa, leitura, arquivamento e marcação como lida. O visitante recebe sucesso somente após a persistência confirmar o recebimento.
