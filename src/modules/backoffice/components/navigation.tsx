@@ -7,6 +7,7 @@ export const sections = [
   { slug: "posts", label: "Posts", icon: FileText },
   { slug: "vagas", label: "Vagas", icon: Briefcase },
   { slug: "servicos", label: "Serviços", icon: Handshake },
+  { slug: "curriculo", label: "Currículo", icon: FileText },
   { slug: "perfil", label: "Perfil", icon: UserRound },
   { slug: "projetos", label: "Projetos", icon: FolderKanban }, { slug: "habilidades", label: "Habilidades", icon: Wrench },
   { slug: "experiencias", label: "Experiências", icon: Briefcase }, { slug: "recomendacoes", label: "Recomendações", icon: BookOpen },

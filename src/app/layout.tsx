@@ -1,6 +1,5 @@
 import { publicContent } from "@/modules/content/services/content";
 import type { Metadata } from "next";
-import Script from "next/script";
 import "./globals.css";
 import {
   SITE_DESCRIPTION,
@@ -9,6 +8,8 @@ import {
   SITE_TITLE,
   getSiteUrl,
   personJsonLd,
+  seoText,
+  isPreviewDeployment,
 } from "@/lib/site";
 
 const siteUrl = getSiteUrl();
@@ -58,12 +59,14 @@ const baseMetadata: Metadata = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { profile } = await publicContent();
-  const title = `${profile.name} | ${profile.headline}`;
-  return { ...baseMetadata, title: { default: title, template: `%s | ${profile.name}` }, description: profile.intro,
+  const { profile, skills } = await publicContent();
+  const title = seoText(`${profile.name} | ${profile.headline}`, 120);
+  const description = seoText(profile.intro);
+  return { ...baseMetadata, robots: isPreviewDeployment() ? { index: false, follow: false, googleBot: { index: false, follow: false } } : baseMetadata.robots, title: { default: title, template: `%s | ${profile.name}` }, description,
+    keywords: Array.from(new Set([profile.name, profile.headline, "Portfólio", ...skills.flatMap(skill => skill.tags)])),
     authors: [{ name: profile.name, url: siteUrl }], creator: profile.name,
-    openGraph: { ...baseMetadata.openGraph, title, description: profile.intro, siteName: profile.name },
-    twitter: { ...baseMetadata.twitter, title, description: profile.intro },
+    openGraph: { ...baseMetadata.openGraph, title, description, siteName: profile.name },
+    twitter: { ...baseMetadata.twitter, title, description },
   };
 }
 
@@ -72,14 +75,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { profile } = await publicContent();
-  const jsonLd = personJsonLd(siteUrl, profile);
+  const { profile, skills } = await publicContent();
+  const jsonLd = personJsonLd(siteUrl, profile, skills);
 
   return (
     <html lang="pt-BR">
       <body className="font-inter antialiased">
         {children}
-        <Script
+        <script
           id="person-jsonld"
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }}

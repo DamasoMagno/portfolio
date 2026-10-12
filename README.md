@@ -177,3 +177,13 @@ Configure `OPENAI_API_KEY` apenas no servidor e, opcionalmente, `OPENAI_MODEL` (
 O provedor implementa `JobAnalysisProvider`, separado da persistência e da comparação ATS. A Responses API recebe somente a descrição/requisitos da vaga e registros profissionais; mensagens de visitantes, analytics, credenciais e contato da candidatura são excluídos. Os registros têm limite de 60 mil caracteres (12 mil por registro), com indicação de truncamento. `store: false`, resposta estruturada validada e tempo limite de 45 segundos. Referências a registros inexistentes, recusas e respostas incompletas são rejeitadas. Sugestões precisam de revisão humana; não comprovam qualificações. A pontuação e o currículo determinístico continuam disponíveis. Falhas/quota da OpenAI não gravam análises parciais; revisões concorrentes não são sobrescritas.
 
 Na lista **Habilidades** do backoffice, **Mostrar/Esconder** altera a publicação de cada stack, preservando seus dados e tecnologias. Grupos ocultos continuam disponíveis no admin e como contexto profissional para análise de vagas.
+
+### Currículo em PDF
+
+Em **Backoffice → Currículo**, selecione um PDF válido de até 4 MB e clique em **Enviar e publicar currículo**. A API exige sessão do proprietário e mesma origem, valida o PDF sem senha/ações automáticas/anexos e envia pelo S3 existente. O bucket deve ser público e aceitar `application/pdf` (o bucket atual já aceita). Somente o link `profile.resume` é atualizado, com controle de revisão. Em conflito, o upload não aplicado é removido. Arquivos anteriores não são excluídos automaticamente. O PDF fica público pelo botão **Baixar CV**. A análise de vagas continua usando o texto informado no formulário; este upload não extrai automaticamente texto do PDF.
+
+### SEO e metadados
+
+O título, descrição, palavras-chave, JSON-LD Person/WebSite e imagens sociais refletem o perfil e as stacks publicadas. Posts publicados têm canonical próprio, Open Graph de artigo, Twitter e BlogPosting. Filtros/buscas do blog recebem noindex, com canonical para `/blog`. O sitemap exclui admin, rascunhos, posts futuros e blog desativado, usando datas persistidas em vez da data da consulta. Backoffice/APIs têm `X-Robots-Tag`; previews recebem noindex e robots bloqueado.
+
+Defina `NEXT_PUBLIC_SITE_URL` com a origem HTTPS pública (sem caminho, parâmetros ou credenciais). Na Vercel, quando omitida, a aplicação usa `VERCEL_PROJECT_PRODUCTION_URL`. Domínio local ou HTTP explícito em produção é rejeitado para evitar canonical incorreto. SEO técnico não garante indexação ou posicionamento; verifique o domínio/sitemap no Google Search Console após publicar.

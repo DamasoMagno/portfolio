@@ -6,7 +6,11 @@ import { publicPosts } from "@/modules/posts/services/posts";
 import { PostCards } from "@/modules/posts/components/post-cards";
 import { AnalyticsTracker } from "@/modules/analytics/components/tracker";
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Posts", description: "Artigos e aprendizados sobre desenvolvimento e projetos.", alternates: { canonical: "/blog" }, openGraph: { title: "Posts", url: "/blog", description: "Artigos e aprendizados sobre desenvolvimento e projetos." } };
+const blogMetadata: Metadata = { title: "Posts", description: "Artigos e aprendizados sobre desenvolvimento e projetos.", alternates: { canonical: "/blog" }, twitter: { card: "summary_large_image", title: "Posts", description: "Artigos e aprendizados sobre desenvolvimento e projetos." }, openGraph: { type: "website", locale: "pt_BR", title: "Posts", url: "/blog", description: "Artigos e aprendizados sobre desenvolvimento e projetos." } };
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ tag?: string; q?: string }> }): Promise<Metadata> {
+  const params = await searchParams;
+  return { ...blogMetadata, ...(params.q || params.tag ? { robots: { index: false, follow: true } } : {}) };
+}
 export default async function BlogPage({ searchParams }: { searchParams: Promise<{ tag?: string; q?: string }> }) {
   const content = await publicPosts();
   if (!content.enabled) notFound();
