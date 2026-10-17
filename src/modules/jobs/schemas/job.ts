@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { discoveryStateSchema, emptyDiscovery, jobSourceSchema } from "./discovery";
 const optionalText = (max = 1000) => z.string().trim().max(max).default("");
 const lines = z.array(z.string().trim().min(1).max(500)).max(40).default([]);
 export const jobStatus = z.enum(["saved", "applied", "interview", "offer", "closed"]);
@@ -33,9 +34,9 @@ export const analysisSchema = z.object({
   sources: z.object({ profile: z.number(), experiences: z.number(), projects: z.number(), skills: z.number(), services: z.number(), recommendations: z.number(), posts: z.number(), resume: z.number() }),
 });
 export type JobAnalysis = z.infer<typeof analysisSchema>;
-export const storedJobSchema = z.object({ id: z.string().uuid(), data: jobInputSchema, createdAt: z.string().datetime(), updatedAt: z.string().datetime(), analyses: z.array(analysisSchema).max(10) });
+export const storedJobSchema = z.object({ id: z.string().uuid(), data: jobInputSchema, origin: z.object({ source: jobSourceSchema, externalId: z.string(), url: z.string().url() }).optional(), createdAt: z.string().datetime(), updatedAt: z.string().datetime(), analyses: z.array(analysisSchema).max(10) });
 export type Job = z.infer<typeof storedJobSchema>;
-export const jobsDocumentSchema = z.object({ version: z.literal(1), revision: z.number().int().nonnegative(), jobs: z.array(storedJobSchema).max(200) });
+export const jobsDocumentSchema = z.object({ version: z.literal(1), revision: z.number().int().nonnegative(), jobs: z.array(storedJobSchema).max(200), discovery: discoveryStateSchema.default(emptyDiscovery) });
 export type JobsDocument = z.infer<typeof jobsDocumentSchema>;
 export const jobActionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("save"), revision: z.number().int().nonnegative(), id: z.string().uuid().optional(), data: jobInputSchema }).strict(),
@@ -43,4 +44,4 @@ export const jobActionSchema = z.discriminatedUnion("action", [
   z.object({ action: z.literal("analyze-ai"), revision: z.number().int().nonnegative(), id: z.string().uuid() }).strict(),
   z.object({ action: z.literal("analyze"), revision: z.number().int().nonnegative(), id: z.string().uuid() }).strict(),
 ]);
-export const emptyJobs = (): JobsDocument => ({ version: 1, revision: 0, jobs: [] });
+export const emptyJobs = (): JobsDocument => ({ version: 1, revision: 0, jobs: [], discovery: emptyDiscovery() });

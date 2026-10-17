@@ -36,3 +36,13 @@ export function extractKeywords(text: string): string[] {
   }
   return [...new Set(terms)].filter(Boolean).slice(0, 80);
 }
+
+// Discovery compares technologies rather than arbitrary words from job descriptions.
+export function canonicalSkill(value: string): string {
+  const normalized = normalize(value);
+  return Object.entries(vocabulary).find(([term, aliases]) => normalize(term) === normalized || aliases.some(alias => normalize(alias) === normalized))?.[0] ?? value.trim();
+}
+export function technologyKeywords(text: string): string[] {
+  const excluded = new Set(["Agile", "Inglês", "Testes"]);
+  return Object.keys(vocabulary).filter(term => !excluded.has(term) && termMatches(term === "React" ? text.replace(/react[ -]native/gi, "") : term === "Spring" ? text.replace(/spring[ -]?boot/gi, "") : text, term));
+}

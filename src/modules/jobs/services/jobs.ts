@@ -42,7 +42,7 @@ export async function updateJobs(input: unknown) {
     if (action.id && index < 0) throw new Error("Vaga não encontrada.");
     if (action.action === "delete") { document.jobs.splice(index, 1); return; }
     const existing = index >= 0 ? document.jobs[index] : undefined, now = new Date().toISOString();
-    const saved = { id: existing?.id ?? randomUUID(), data: action.data, createdAt: existing?.createdAt ?? now, updatedAt: now, analyses: existing?.analyses ?? [] };
+    const saved = { id: existing?.id ?? randomUUID(), data: action.data, createdAt: existing?.createdAt ?? now, updatedAt: now, analyses: existing?.analyses ?? [], ...(existing?.origin ? { origin: existing.origin } : {}) };
     if (existing) document.jobs[index] = saved; else document.jobs.unshift(saved);
   });
 }
